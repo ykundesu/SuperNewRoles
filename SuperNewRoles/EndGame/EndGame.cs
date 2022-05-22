@@ -1061,6 +1061,7 @@ namespace SuperNewRoles.EndGame
                 if (CheckAndEndGameForEgoistWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
+                if (CheckAndEndGameForChildEnd(__instance)) return false;
                 if (!PlusModeHandler.isMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)) return false;
             }
             return false;
@@ -1214,11 +1215,6 @@ namespace SuperNewRoles.EndGame
                 {
                     if (!p.isAlive())
                     {
-                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
-                            Writer.Write(p.PlayerId);
-                            AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                            CustomRPC.RPCProcedure.ShareWinner(p.PlayerId);
-                            __instance.enabled = false;
                             CustomEndGame((GameOverReason)CustomGameOverReason.ChildEnd, false);
                             return true;
                     }

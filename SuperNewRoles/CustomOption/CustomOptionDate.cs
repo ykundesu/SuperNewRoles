@@ -964,8 +964,8 @@ namespace SuperNewRoles.CustomOption
             LoversShortTask = loversoption.Item2;
             LoversLongTask = loversoption.Item3;
 
-            ChildOption = new CustomRoleOption(403, true, CustomOptionType.Crewmate, "ChildName", RoleClass.Child.color, 1);
-            ChildPlayerCount = CustomOption.Create(404, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ChildOption);
+            ChildOption = new CustomRoleOption(403, false, CustomOptionType.Crewmate, "ChildName", RoleClass.Child.color, 1);
+            ChildPlayerCount = CustomOption.Create(404, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ChildOption);
 
             SuperNewRolesPlugin.Logger.LogInfo("設定のidのMax:"+CustomOption.Max);
         }
