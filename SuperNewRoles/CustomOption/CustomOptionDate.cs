@@ -475,6 +475,9 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption LoversLongTask;
         public static CustomOption LoversShortTask;
 
+        public static CustomOption ChildOption;
+        public static CustomOption ChildPlayerCount;
+
         private static string[] GuesserCount = new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" };
         public static string[] LevelingerTexts = new string[] { };
         private static string[] VultureDeadBodyCount = new string[] { "1", "2", "3", "4", "5", "6" };
@@ -960,6 +963,9 @@ namespace SuperNewRoles.CustomOption
             LoversCommonTask = loversoption.Item1;
             LoversShortTask = loversoption.Item2;
             LoversLongTask = loversoption.Item3;
+
+            ChildOption = new CustomRoleOption(403, true, CustomOptionType.Crewmate, "ChildName", RoleClass.Child.color, 1);
+            ChildPlayerCount = CustomOption.Create(404, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ChildOption);
 
             SuperNewRolesPlugin.Logger.LogInfo("設定のidのMax:"+CustomOption.Max);
         }
