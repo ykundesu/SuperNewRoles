@@ -1164,8 +1164,6 @@ namespace SuperNewRoles.EndGame
             }
             return false;
         }
-        
-
         public static bool CheckAndEndGameForCrewmateWin(ShipStatus __instance, PlayerStatistics statistics)
         {
             if (statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0)
@@ -1186,6 +1184,31 @@ namespace SuperNewRoles.EndGame
         public static bool CheckAndEndGameForWorkpersonWin(ShipStatus __instance)
         {
             foreach (PlayerControl p in RoleClass.Workperson.WorkpersonPlayer)
+            {
+                if (!p.Data.Disconnected)
+                {
+                    if (p.isAlive() || !RoleClass.Workperson.IsAliveWin)
+                    {
+                        var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
+                        if (playerCompleted >= playerTotal)
+                        {
+                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                            Writer.Write(p.PlayerId);
+                            AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                            CustomRPC.RPCProcedure.ShareWinner(p.PlayerId);
+                            __instance.enabled = false;
+                            CustomEndGame((GameOverReason)CustomGameOverReason.WorkpersonWin, false);
+                            return true;
+
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+        public static bool CheckAndEndGameForChildEnd(ShipStatus __instance)
+        {
+            foreach (PlayerControl p in RoleClass.Child.ChildPlayer)
             {
                 if (!p.Data.Disconnected)
                 {
