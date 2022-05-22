@@ -1212,20 +1212,15 @@ namespace SuperNewRoles.EndGame
             {
                 if (!p.Data.Disconnected)
                 {
-                    if (p.isAlive() || !RoleClass.Workperson.IsAliveWin)
+                    if (!p.isAlive())
                     {
-                        var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
-                        if (playerCompleted >= playerTotal)
-                        {
                             MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
                             Writer.Write(p.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(Writer);
                             CustomRPC.RPCProcedure.ShareWinner(p.PlayerId);
                             __instance.enabled = false;
-                            CustomEndGame((GameOverReason)CustomGameOverReason.WorkpersonWin, false);
+                            CustomEndGame((GameOverReason)CustomGameOverReason.ChildEnd, false);
                             return true;
-
-                        }
                     }
                 }
             }
