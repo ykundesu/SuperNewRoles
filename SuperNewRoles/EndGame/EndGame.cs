@@ -34,7 +34,8 @@ namespace SuperNewRoles.EndGame
         MadJesterWin,
         FalseChargesWin,
         FoxWin,
-        BugEnd
+        BugEnd,
+        ChildEnd
     }
     [HarmonyPatch(typeof(ShipStatus))]
     public class ShipStatusPatch
@@ -241,6 +242,12 @@ namespace SuperNewRoles.EndGame
             {
                 text = "ImpostorName";
                 textRenderer.color = RoleClass.ImpostorRed;
+            }
+            else if (AdditionalTempData.winCondition == WinCondition.ChildEnd)
+            {
+                text = "ChildName";
+                textRenderer.color = Roles.RoleClass.Child.color;
+                __instance.BackgroundBar.material.SetColor("_Color", Roles.RoleClass.Child.color);
             }
             var haison = false;
             if (text == "HAISON") {
@@ -526,6 +533,7 @@ namespace SuperNewRoles.EndGame
             bool FalseChargesWin = gameOverReason == (GameOverReason)CustomGameOverReason.FalseChargesWin;
             bool FoxWin = gameOverReason == (GameOverReason)CustomGameOverReason.FoxWin;
             bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
+            bool ChildEND = gameOverReason == (GameOverReason)CustomGameOverReason.ChildEnd;
             if (ModeHandler.isMode(ModeId.SuperHostRoles) && EndData != null)
             {
                 JesterWin = EndData == CustomGameOverReason.JesterWin;
@@ -534,6 +542,7 @@ namespace SuperNewRoles.EndGame
                 FalseChargesWin = EndData == CustomGameOverReason.FalseChargesWin;
                 QuarreledWin = EndData == CustomGameOverReason.QuarreledWin;
                 FoxWin = EndData == CustomGameOverReason.FoxWin;
+                ChildEND = EndData == CustomGameOverReason.ChildEnd;
             }
 
 
@@ -749,6 +758,14 @@ namespace SuperNewRoles.EndGame
                     }
                 }
                 AdditionalTempData.winCondition = WinCondition.BugEnd;
+            }
+            else if (ChildEND)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("子供が殺された");
+                WinnerPlayer.Data.IsDead = true;
+                WinningPlayerData wpd = new WinningPlayerData(WinnerPlayer.Data);
+                TempData.winners.Add(wpd);
+                AdditionalTempData.winCondition = WinCondition.ChildEnd;
             }
             bool IsSingleTeam = CustomOptions.LoversSingleTeam.getBool();
             foreach (List<PlayerControl> plist in RoleClass.Lovers.LoversPlayer)
