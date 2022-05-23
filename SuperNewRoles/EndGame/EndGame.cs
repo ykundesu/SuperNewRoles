@@ -245,9 +245,10 @@ namespace SuperNewRoles.EndGame
             }
             else if (AdditionalTempData.winCondition == WinCondition.ChildEnd)
             {
-                text = "ChildName";
-                textRenderer.color = Roles.RoleClass.Child.color;
-                __instance.BackgroundBar.material.SetColor("_Color", Roles.RoleClass.Child.color);
+                SuperNewRolesPlugin.Logger.LogInfo("仕事人勝利文字");
+                text = "WorkpersonName";
+                textRenderer.color = RoleClass.Workperson.color;
+                __instance.BackgroundBar.material.SetColor("_Color", RoleClass.Workperson.color);
             }
             var haison = false;
             if (text == "HAISON") {
@@ -761,11 +762,11 @@ namespace SuperNewRoles.EndGame
             }
             else if (ChildEND)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("子供が殺された");
-                WinnerPlayer.Data.IsDead = true;
+                SuperNewRolesPlugin.Logger.LogInfo("仕事人勝利");
+                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
                 WinningPlayerData wpd = new WinningPlayerData(WinnerPlayer.Data);
                 TempData.winners.Add(wpd);
-                AdditionalTempData.winCondition = WinCondition.ChildEnd;
+                AdditionalTempData.winCondition = WinCondition.WorkpersonWin;
             }
             bool IsSingleTeam = CustomOptions.LoversSingleTeam.getBool();
             foreach (List<PlayerControl> plist in RoleClass.Lovers.LoversPlayer)
