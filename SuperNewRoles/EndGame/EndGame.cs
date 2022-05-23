@@ -247,8 +247,8 @@ namespace SuperNewRoles.EndGame
             {
                 SuperNewRolesPlugin.Logger.LogInfo("仕事人勝利文字");
                 text = "WorkpersonName";
-                textRenderer.color = RoleClass.Workperson.color;
-                __instance.BackgroundBar.material.SetColor("_Color", RoleClass.Workperson.color);
+                textRenderer.color = RoleClass.Child.color;
+                __instance.BackgroundBar.material.SetColor("_Color", RoleClass.Child.color);
             }
             var haison = false;
             if (text == "HAISON") {
@@ -763,10 +763,7 @@ namespace SuperNewRoles.EndGame
             else if (ChildEND)
             {
                 SuperNewRolesPlugin.Logger.LogInfo("仕事人勝利");
-                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                WinningPlayerData wpd = new WinningPlayerData(WinnerPlayer.Data);
-                TempData.winners.Add(wpd);
-                AdditionalTempData.winCondition = WinCondition.WorkpersonWin;
+                AdditionalTempData.winCondition = WinCondition.ChildEnd;
             }
             bool IsSingleTeam = CustomOptions.LoversSingleTeam.getBool();
             foreach (List<PlayerControl> plist in RoleClass.Lovers.LoversPlayer)
