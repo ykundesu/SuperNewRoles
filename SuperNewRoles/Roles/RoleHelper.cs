@@ -496,6 +496,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.RemoteSheriff):
                     Roles.RoleClass.RemoteSheriff.RemoteSheriffPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Child):
+                    Roles.RoleClass.Child.ChildPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -750,6 +753,9 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.RemoteSheriff):
                     Roles.RoleClass.RemoteSheriff.RemoteSheriffPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.Child):
+                    Roles.RoleClass.Child.ChildPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
 
@@ -1363,6 +1369,10 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.Fox;
                 }
+            else if (Roles.RoleClass.Child.ChildPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Child;
+            }
             //ロールチェック
             }
             catch (Exception e)

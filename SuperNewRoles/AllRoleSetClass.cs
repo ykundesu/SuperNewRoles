@@ -832,6 +832,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.RemoteSheriffPlayerCount.getFloat();
                 case (RoleId.Fox):
                     return CustomOption.CustomOptions.FoxPlayerCount.getFloat();
+                    case (RoleId.Child):
+                    return CustomOption.CustomOptions.ChildPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -2145,6 +2147,22 @@ namespace SuperNewRoles
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.RemoteSheriffOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.RemoteSheriff;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.ChildOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.ChildOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Child;
                 if (OptionDate == 10)
                 {
                     Crewonepar.Add(ThisRoleId);

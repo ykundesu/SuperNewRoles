@@ -2299,6 +2299,18 @@
  "RemoteSheriffIsKillTeleportSetting" : {
         "0" : "Kill Teleport" ,
         "11" : "\u30ad\u30eb\u30c6\u30ec\u30dd\u30fc\u30c8"
+        } ,
+ "ChildName" : {
+        "0" : "Child" ,
+        "11" : "\u5b50\u4f9b"
+        } ,
+ "ChildTitle1" : {
+        "0" : "You're a treasure of the future." ,
+        "11" : "\u672a\u6765\u306e\u5b9d\u3060"
+        } ,
+ "ChildEndText" : {
+        "0" : "Child is Dead" ,
+        "11" : "\u5b50\u4f9b\u304c\u6b7b\u4ea1\u3057\u305f"
         } 
 
 }

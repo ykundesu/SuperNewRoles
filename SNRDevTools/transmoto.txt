@@ -573,3 +573,6 @@ EvilSeerTitle1
 RemoteSheriffName
 RemoteSheriffTitle1
 RemoteSheriffIsKillTeleportSetting
+ChildName
+ChildTitle1
+ChildEndText

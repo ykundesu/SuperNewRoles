@@ -34,7 +34,8 @@ namespace SuperNewRoles.EndGame
         MadJesterWin,
         FalseChargesWin,
         FoxWin,
-        BugEnd
+        BugEnd,
+        ChildEnd
     }
     [HarmonyPatch(typeof(ShipStatus))]
     public class ShipStatusPatch
@@ -243,6 +244,14 @@ namespace SuperNewRoles.EndGame
                 textRenderer.color = RoleClass.ImpostorRed;
             }
             var haison = false;
+            if (AdditionalTempData.winCondition == WinCondition.ChildEnd)
+            {
+                haison = true;
+                SuperNewRolesPlugin.Logger.LogInfo("ChildEndText");
+                text = "ChildEndText";
+                textRenderer.color = RoleClass.Child.color;
+                __instance.BackgroundBar.material.SetColor("_Color", RoleClass.Workperson.color);
+            }
             if (text == "HAISON") {
                 haison = true;
                 text = ModTranslation.getString("HaisonName");
@@ -526,6 +535,7 @@ namespace SuperNewRoles.EndGame
             bool FalseChargesWin = gameOverReason == (GameOverReason)CustomGameOverReason.FalseChargesWin;
             bool FoxWin = gameOverReason == (GameOverReason)CustomGameOverReason.FoxWin;
             bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
+            bool ChildEND = gameOverReason == (GameOverReason)CustomGameOverReason.ChildEnd;
             if (ModeHandler.isMode(ModeId.SuperHostRoles) && EndData != null)
             {
                 JesterWin = EndData == CustomGameOverReason.JesterWin;
@@ -534,6 +544,7 @@ namespace SuperNewRoles.EndGame
                 FalseChargesWin = EndData == CustomGameOverReason.FalseChargesWin;
                 QuarreledWin = EndData == CustomGameOverReason.QuarreledWin;
                 FoxWin = EndData == CustomGameOverReason.FoxWin;
+                ChildEND = EndData == CustomGameOverReason.ChildEnd;
             }
 
 
@@ -749,6 +760,13 @@ namespace SuperNewRoles.EndGame
                     }
                 }
                 AdditionalTempData.winCondition = WinCondition.BugEnd;
+            }
+            else if (ChildEND)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("子供死亡");
+                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                WinningPlayerData wpd = new WinningPlayerData(WinnerPlayer.Data);
+                AdditionalTempData.winCondition = WinCondition.ChildEnd;
             }
             bool IsSingleTeam = CustomOptions.LoversSingleTeam.getBool();
             foreach (List<PlayerControl> plist in RoleClass.Lovers.LoversPlayer)
@@ -1044,6 +1062,7 @@ namespace SuperNewRoles.EndGame
                 if (CheckAndEndGameForEgoistWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
+                if (CheckAndEndGameForChildEnd(__instance)) return false;
                 if (!PlusModeHandler.isMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)) return false;
             }
             return false;
@@ -1147,8 +1166,6 @@ namespace SuperNewRoles.EndGame
             }
             return false;
         }
-        
-
         public static bool CheckAndEndGameForCrewmateWin(ShipStatus __instance, PlayerStatistics statistics)
         {
             if (statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0)
@@ -1186,6 +1203,26 @@ namespace SuperNewRoles.EndGame
                             return true;
 
                         }
+                    }
+                }
+            }
+            return false;
+        }
+        public static bool CheckAndEndGameForChildEnd(ShipStatus __instance)
+        {
+            foreach (PlayerControl p in RoleClass.Child.ChildPlayer)
+            {
+                if (!p.Data.Disconnected)
+                {
+                    if (!p.isAlive())
+                    {
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                        Writer.Write(p.PlayerId);
+                        AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                        CustomRPC.RPCProcedure.ShareWinner(p.PlayerId);
+                        __instance.enabled = false;
+                            CustomEndGame((GameOverReason)CustomGameOverReason.ChildEnd, false);
+                            return true;
                     }
                 }
             }
