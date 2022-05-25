@@ -243,14 +243,15 @@ namespace SuperNewRoles.EndGame
                 text = "ImpostorName";
                 textRenderer.color = RoleClass.ImpostorRed;
             }
-            else if (AdditionalTempData.winCondition == WinCondition.ChildEnd)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo("仕事人勝利文字");
-                text = "WorkpersonName";
-                textRenderer.color = RoleClass.Child.color;
-                __instance.BackgroundBar.material.SetColor("_Color", RoleClass.Child.color);
-            }
             var haison = false;
+            if (AdditionalTempData.winCondition == WinCondition.ChildEnd)
+            {
+                haison = true;
+                SuperNewRolesPlugin.Logger.LogInfo("ChildEndText");
+                text = "ChildEndText";
+                textRenderer.color = RoleClass.Child.color;
+                __instance.BackgroundBar.material.SetColor("_Color", RoleClass.Workperson.color);
+            }
             if (text == "HAISON") {
                 haison = true;
                 text = ModTranslation.getString("HaisonName");
@@ -762,7 +763,9 @@ namespace SuperNewRoles.EndGame
             }
             else if (ChildEND)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("仕事人勝利");
+                SuperNewRolesPlugin.Logger.LogInfo("子供死亡");
+                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                WinningPlayerData wpd = new WinningPlayerData(WinnerPlayer.Data);
                 AdditionalTempData.winCondition = WinCondition.ChildEnd;
             }
             bool IsSingleTeam = CustomOptions.LoversSingleTeam.getBool();
@@ -1213,6 +1216,11 @@ namespace SuperNewRoles.EndGame
                 {
                     if (!p.isAlive())
                     {
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                        Writer.Write(p.PlayerId);
+                        AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                        CustomRPC.RPCProcedure.ShareWinner(p.PlayerId);
+                        __instance.enabled = false;
                             CustomEndGame((GameOverReason)CustomGameOverReason.ChildEnd, false);
                             return true;
                     }

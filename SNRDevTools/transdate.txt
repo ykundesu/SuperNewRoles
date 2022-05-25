@@ -576,3 +576,4 @@ RemoteSheriffTitle1,Let's do a Remote Sheriff kill!,遠隔でシェリフキル�
 RemoteSheriffIsKillTeleportSetting,Kill Teleport,キルテレポート
 ChildName,Child,子供
 ChildTitle1,You're a treasure of the future.,未来の宝だ
+ChildEndText,Child is Dead,子供が死亡した

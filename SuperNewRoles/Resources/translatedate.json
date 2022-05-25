@@ -2307,6 +2307,10 @@
  "ChildTitle1" : {
         "0" : "You're a treasure of the future." ,
         "11" : "\u672a\u6765\u306e\u5b9d\u3060"
+        } ,
+ "ChildEndText" : {
+        "0" : "Child is Dead" ,
+        "11" : "\u5b50\u4f9b\u304c\u6b7b\u4ea1\u3057\u305f"
         } 
 
 }

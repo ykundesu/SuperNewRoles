@@ -575,3 +575,4 @@ Let's do a Remote Sheriff kill!
 Kill Teleport
 Child
 You're a treasure of the future.
+Child is Dead
