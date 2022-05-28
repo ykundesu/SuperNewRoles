@@ -43,6 +43,8 @@ namespace SuperNewRoles.Buttons
         public static CustomButton ImpostorSidekickButton;
         public static CustomButton SideKillerSidekickButton;
         public static CustomButton FalseChargesFalseChargeButton;
+        public static CustomButton MadMakerSidekickButton;
+        public static CustomButton DemonButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
 
@@ -374,7 +376,7 @@ namespace SuperNewRoles.Buttons
                         Jackal.resetCoolDown();
                     }
                 },
-                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Jackal) && RoleClass.Jackal.IsCreateSidekick; },
+                () => { return ModeHandler.isMode(ModeId.Default) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Jackal) && RoleClass.Jackal.IsCreateSidekick; },
                 () =>
                 {
                     return Jackal.JackalFixedPatch.JackalsetTarget() && PlayerControl.LocalPlayer.CanMove;
@@ -391,6 +393,7 @@ namespace SuperNewRoles.Buttons
             JackalSidekickButton.buttonText = ModTranslation.getString("JackalCreateSidekickButtonName");
             JackalSidekickButton.showButtonText = true;
 
+
             JackalKillButton = new CustomButton(
                 () =>
                 {
@@ -399,11 +402,17 @@ namespace SuperNewRoles.Buttons
                         ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, Jackal.JackalFixedPatch.JackalsetTarget());
                         Jackal.resetCoolDown();
                     }
+                    if (TeleportingJackal.JackalFixedPatch.TeleportingJackalsetTarget() && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
+                    {
+                        ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, TeleportingJackal.JackalFixedPatch.TeleportingJackalsetTarget());
+                        TeleportingJackal.resetCoolDown();
+                    }
                 },
-                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer); },
+                () => { return ModeHandler.isMode(ModeId.Default) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) || RoleHelpers.isAlive(PlayerControl.LocalPlayer) && RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer); },
                 () =>
                 {
                     return Jackal.JackalFixedPatch.JackalsetTarget() && PlayerControl.LocalPlayer.CanMove;
+                    return TeleportingJackal.JackalFixedPatch.TeleportingJackalsetTarget() && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { Jackal.EndMeeting(); },
                 __instance.KillButton.graphic.sprite,
@@ -477,7 +486,7 @@ namespace SuperNewRoles.Buttons
                     Teleporter.TeleportStart();
                     Teleporter.ResetCoolDown();
                 },
-                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && (Teleporter.IsTeleporter(PlayerControl.LocalPlayer) || RoleClass.Levelinger.IsPower(RoleClass.Levelinger.LevelPowerTypes.Teleporter)) || RoleHelpers.isAlive(PlayerControl.LocalPlayer) && (NiceTeleporter.IsNiceTeleporter(PlayerControl.LocalPlayer)); },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && (Teleporter.IsTeleporter(PlayerControl.LocalPlayer) || RoleClass.Levelinger.IsPower(RoleClass.Levelinger.LevelPowerTypes.Teleporter)) || RoleHelpers.isAlive(PlayerControl.LocalPlayer) && (NiceTeleporter.IsNiceTeleporter(PlayerControl.LocalPlayer)) || RoleHelpers.isAlive(PlayerControl.LocalPlayer) && (TeleportingJackal.IsTeleportingJackal(PlayerControl.LocalPlayer)); },
                 () =>
                 {
                     return true && PlayerControl.LocalPlayer.CanMove;
@@ -807,11 +816,68 @@ namespace SuperNewRoles.Buttons
             SideKillerSidekickButton.buttonText = ModTranslation.getString("SidekickName");
             SideKillerSidekickButton.showButtonText = true;
 
+            MadMakerSidekickButton = new CustomButton(
+                () =>
+                {
+                    var target = setTarget();
+                    if (!target.Data.Role.IsImpostor && target && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && !RoleClass.MadMaker.IsCreateMadmate)
+                    {
+                        target.RpcSetRole(RoleTypes.Crewmate);
+                        target.setRoleRPC(RoleId.MadMate);
+                        RoleClass.MadMaker.IsCreateMadmate = true;
+                    } else if (target.Data.Role.IsImpostor)
+                    {
+                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                    }
+                },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.MadMaker) && ModeHandler.isMode(ModeId.Default) && !RoleClass.MadMaker.IsCreateMadmate;},
+                () =>
+                {
+                    return setTarget() && PlayerControl.LocalPlayer.CanMove;
+                },
+                () => { },
+                RoleClass.Jackal.getButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
+            );
+
+            MadMakerSidekickButton.buttonText = ModTranslation.getString("SidekickName");
+            MadMakerSidekickButton.showButtonText = true;
+
             RoleClass.SerialKiller.SuicideKillText = GameObject.Instantiate(HudManager.Instance.KillButton.cooldownTimerText, HudManager.Instance.KillButton.cooldownTimerText.transform.parent);
             RoleClass.SerialKiller.SuicideKillText.text = "";
             RoleClass.SerialKiller.SuicideKillText.enableWordWrapping = false;
             RoleClass.SerialKiller.SuicideKillText.transform.localScale = Vector3.one * 0.5f;
             RoleClass.SerialKiller.SuicideKillText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
+
+            DemonButton = new CustomButton(
+                () =>
+                {
+
+                    Demon.DemonCurse(setTarget(untarget : Demon.GetUntarget()));
+                    DemonButton.Timer = DemonButton.MaxTimer;
+                },
+                () => { return Demon.IsButton(); },
+                () =>
+                {
+                    return setTarget(untarget: Demon.GetUntarget()) && PlayerControl.LocalPlayer.CanMove;
+                },
+                () => { DemonButton.MaxTimer = RoleClass.Demon.CoolTime;
+                    DemonButton.Timer = RoleClass.Demon.CoolTime;
+                },
+                RoleClass.Demon.getButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
+            );
+
+            DemonButton.buttonText = ModTranslation.getString("DemonButtonName");
+            DemonButton.showButtonText = true;
 
             setCustomButtonCooldowns();
         }

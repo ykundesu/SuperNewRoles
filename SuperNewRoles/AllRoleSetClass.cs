@@ -66,6 +66,8 @@ namespace SuperNewRoles
         {
             RPCHelper.StartRPC(CustomRPC.CustomRPC.StartGameRPC).EndRPC();
             CustomRPC.RPCProcedure.StartGameRPC();
+
+            RoleSelectHandler.SpawnBots();
         }
     }
     [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]
@@ -99,7 +101,7 @@ namespace SuperNewRoles
                 AllRoleSetClass.impostors = new List<PlayerControl>();
                 foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
-                    if (!player.Data.Disconnected)
+                    if (!player.Data.Disconnected && player.IsPlayer())
                     {
                         SelectPlayers.Add(player);
                     }
@@ -276,7 +278,7 @@ namespace SuperNewRoles
             {
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
-                    if (!p.Data.Role.IsImpostor && !p.isNeutral())
+                    if (!p.Data.Role.IsImpostor && !p.isNeutral() && p.IsPlayer())
                     {
                         SelectPlayers.Add(p);
                     }
@@ -285,7 +287,10 @@ namespace SuperNewRoles
             {
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
-                    SelectPlayers.Add(p);
+                    if (p.IsPlayer())
+                    {
+                        SelectPlayers.Add(p);
+                    }
                 }
             }
             for (int i = 0; i < CustomOptions.QuarreledTeamCount.getFloat(); i++)
@@ -332,7 +337,7 @@ namespace SuperNewRoles
             {
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
-                    if (!p.isImpostor() && !p.isNeutral() && !p.isRole(RoleId.truelover))
+                    if (!p.isImpostor() && !p.isNeutral() && !p.isRole(RoleId.truelover) && p.IsPlayer())
                     {
                         if (!IsQuarreledDup || !p.IsQuarreled())
                         {
@@ -345,7 +350,7 @@ namespace SuperNewRoles
             {
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
-                    if (!IsQuarreledDup || !p.IsQuarreled())
+                    if (!IsQuarreledDup || !p.IsQuarreled() && p.IsPlayer())
                     {
                         if (!p.isRole(RoleId.truelover))
                         {
@@ -832,6 +837,16 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.RemoteSheriffPlayerCount.getFloat();
                 case (RoleId.Fox):
                     return CustomOption.CustomOptions.FoxPlayerCount.getFloat();
+                case (RoleId.TeleportingJackal):
+                    return CustomOption.CustomOptions.TeleportingJackalPlayerCount.getFloat();
+                case (RoleId.MadMaker):
+                    return CustomOption.CustomOptions.MadMakerPlayerCount.getFloat();
+                case (RoleId.Demon):
+                    return CustomOption.CustomOptions.DemonPlayerCount.getFloat();
+                case (RoleId.TaskManager):
+                    return CustomOption.CustomOptions.TaskManagerPlayerCount.getFloat();
+                case (RoleId.SeerFriends):
+                    return CustomOption.CustomOptions.SeerFriendsPlayerCount.getFloat();
                     case (RoleId.Child):
                     return CustomOption.CustomOptions.ChildPlayerCount.getFloat();
                     //プレイヤーカウント
@@ -2147,6 +2162,86 @@ namespace SuperNewRoles
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.RemoteSheriffOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.RemoteSheriff;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.TeleportingJackalOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.TeleportingJackalOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.TeleportingJackal;
+                if (OptionDate == 10)
+                {
+                    Neutonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Neutnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.MadMakerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.MadMakerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.MadMaker;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.DemonOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.DemonOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Demon;
+                if (OptionDate == 10)
+                {
+                    Neutonepar.Add(ThisRoleId);
+                } else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Neutnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+
+        if (!(CustomOption.CustomOptions.TaskManagerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.TaskManagerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.TaskManager;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.SeerFriendsOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.SeerFriendsOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.SeerFriends;
                 if (OptionDate == 10)
                 {
                     Crewonepar.Add(ThisRoleId);

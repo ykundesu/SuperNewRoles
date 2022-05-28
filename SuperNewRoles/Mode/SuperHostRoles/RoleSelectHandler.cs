@@ -1,4 +1,5 @@
-﻿using SuperNewRoles.CustomRPC;
+﻿using SuperNewRoles.CustomOption;
+using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using System;
@@ -19,7 +20,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             AllRoleSetClass.AllRoleSet();
             SetCustomRoles();
             SyncSetting.CustomSyncSettings();
-
             ChacheManager.ResetChache();
             FixedUpdate.SetRoleNames();
             main.SendAllRoleChat();
@@ -38,8 +38,77 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
             }, 3f, "SetImpostor");
         }
+        public static void SpawnBots()
+        {
+            if (ModeHandler.isMode(ModeId.SuperHostRoles))
+            {
+
+                bool IsJackalSpawned = false;
+                //ジャッカルがいるなら
+                if (CustomOptions.JackalOption.getSelection() != 0)
+                {
+                    IsJackalSpawned = true;
+                    for (int i = 0; i < (1 * PlayerControl.GameOptions.NumImpostors + 2); i++)
+                    {
+                        PlayerControl bot = BotManager.Spawn("暗転対策BOT" + (i + 1));
+                        if (i == 0)
+                        {
+                            bot.RpcSetRole(RoleTypes.Impostor);
+                        }
+                        if (i > 0) {
+                            bot.RpcSetRole(RoleTypes.Crewmate);
+                        }
+                    }
+                } else
+                {
+                bool flag = !IsJackalSpawned && (
+                    CustomOptions.EgoistOption.getSelection() != 0 ||
+                    CustomOptions.SheriffOption.getSelection() != 0 ||
+                    CustomOptions.trueloverOption.getSelection() != 0 ||
+                    CustomOptions.FalseChargesOption.getSelection() != 0 ||
+                    CustomOptions.RemoteSheriffOption.getSelection() != 0 ||
+                    CustomOptions.MadMakerOption.getSelection() != 0 ||
+                    CustomOptions.DemonOption.getSelection() != 0 
+                    );
+                    if (flag)
+                    {
+                        PlayerControl bot1 = BotManager.Spawn("暗転対策BOT1");
+                        bot1.RpcSetRole(RoleTypes.Impostor);
+
+                        PlayerControl bot2 = BotManager.Spawn("暗転対策BOT2");
+                        bot2.RpcSetRole(RoleTypes.Crewmate);
+
+                        PlayerControl bot3 = BotManager.Spawn("暗転対策BOT3");
+                        bot3.RpcSetRole(RoleTypes.Crewmate);
+                    }
+                }
+            } else if (ModeHandler.isMode(ModeId.LevelUp))
+            {
+                BotManager.Spawn("キルされてしまうかわいそうなBOT");
+            }
+        }
         public static void SetCustomRoles() {
             List<PlayerControl> DesyncImpostorPlayers = new List<PlayerControl>();
+            foreach (PlayerControl JackalPlayer in RoleClass.Jackal.JackalPlayer)
+            {
+                if (!JackalPlayer.IsMod())
+                {
+                    JackalPlayer.RpcSetRoleDesync(RoleTypes.Impostor);
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (p.PlayerId != JackalPlayer.PlayerId && p.IsPlayer())
+                        {
+                            JackalPlayer.RpcSetRoleDesync(RoleTypes.Scientist, p);
+                            p.RpcSetRoleDesync(RoleTypes.Scientist, JackalPlayer);
+                        }
+                    }
+                }
+                else
+                {
+                    JackalPlayer.RpcSetRole(RoleTypes.Crewmate);
+                }
+                //SheriffPlayer.Data.IsDead = true;
+            }
             foreach (PlayerControl SheriffPlayer in RoleClass.Sheriff.SheriffPlayer)
             {
                 if (!SheriffPlayer.IsMod())
@@ -47,7 +116,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     SheriffPlayer.RpcSetRoleDesync(RoleTypes.Impostor);
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
-                        if (p.PlayerId != SheriffPlayer.PlayerId)
+                        if (p.PlayerId != SheriffPlayer.PlayerId && p.IsPlayer())
                         {
                             SheriffPlayer.RpcSetRoleDesync(RoleTypes.Scientist, p);
                             p.RpcSetRoleDesync(RoleTypes.Scientist, SheriffPlayer);
@@ -59,6 +128,26 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
                 //SheriffPlayer.Data.IsDead = true;
             }
+            foreach (PlayerControl DemonPlayer in RoleClass.Demon.DemonPlayer)
+            {
+                if (!DemonPlayer.IsMod())
+                {
+                    DemonPlayer.RpcSetRoleDesync(RoleTypes.Impostor);
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (p.PlayerId != DemonPlayer.PlayerId && p.IsPlayer())
+                        {
+                            DemonPlayer.RpcSetRoleDesync(RoleTypes.Scientist, p);
+                            p.RpcSetRoleDesync(RoleTypes.Scientist, DemonPlayer);
+                        }
+                    }
+                }
+                else
+                {
+                    DemonPlayer.RpcSetRole(RoleTypes.Crewmate);
+                }
+                //DemonPlayer.Data.IsDead = true;
+            }
             foreach (PlayerControl RemoteSheriffPlayer in RoleClass.RemoteSheriff.RemoteSheriffPlayer)
             {
                 if (!RemoteSheriffPlayer.IsMod())
@@ -66,7 +155,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     RemoteSheriffPlayer.RpcSetRoleDesync(RoleTypes.Shapeshifter);
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
-                        if (p.PlayerId != RemoteSheriffPlayer.PlayerId)
+                        if (p.PlayerId != RemoteSheriffPlayer.PlayerId && p.IsPlayer())
                         {
                             RemoteSheriffPlayer.RpcSetRoleDesync(RoleTypes.Scientist, p);
                             p.RpcSetRoleDesync(RoleTypes.Scientist, RemoteSheriffPlayer);
@@ -86,7 +175,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     trueloverPlayer.RpcSetRoleDesync(RoleTypes.Impostor);
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
-                        if (p.PlayerId != trueloverPlayer.PlayerId && !p.isRole(RoleId.Sheriff))
+                        if (p.PlayerId != trueloverPlayer.PlayerId && p.IsPlayer())
                         {
                             trueloverPlayer.RpcSetRoleDesync(RoleTypes.Scientist, p);
                             p.RpcSetRoleDesync(RoleTypes.Scientist, trueloverPlayer);
@@ -106,7 +195,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     Player.RpcSetRoleDesync(RoleTypes.Impostor);
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
-                        if (p.PlayerId != Player.PlayerId && !p.isRole(RoleId.Sheriff))
+                        if (p.PlayerId != Player.PlayerId && p.IsPlayer())
                         {
                             Player.RpcSetRoleDesync(RoleTypes.Scientist, p);
                             p.RpcSetRoleDesync(RoleTypes.Scientist, Player);
@@ -119,11 +208,40 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
                 //trueloverPlayer.Data.IsDead = true;
             }
+            foreach (PlayerControl MadMakerPlayer in RoleClass.MadMaker.MadMakerPlayer)
+            {
+                if (!MadMakerPlayer.IsMod())
+                {
+                    MadMakerPlayer.RpcSetRoleDesync(RoleTypes.Impostor);
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (p.PlayerId != MadMakerPlayer.PlayerId && p.IsPlayer())
+                        {
+                            MadMakerPlayer.RpcSetRoleDesync(RoleTypes.Scientist, p);
+                            p.RpcSetRoleDesync(RoleTypes.Scientist, MadMakerPlayer);
+                        }
+                    }
+                }
+                else
+                {
+                    MadMakerPlayer.RpcSetRole(RoleTypes.Crewmate);
+                }
+            }
             if (RoleClass.Jester.IsUseVent)
             {
                 foreach (PlayerControl p in RoleClass.Jester.JesterPlayer)
                 {
                     if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(p.getClientId()))
+                    {
+                        p.RpcSetRoleDesync(RoleTypes.Engineer);
+                    }
+                }
+            }
+            if (RoleClass.JackalFriends.IsUseVent)
+            {
+                foreach (PlayerControl p in RoleClass.JackalFriends.JackalFriendsPlayer)
+                {
+                    if (!p.IsMod())
                     {
                         p.RpcSetRoleDesync(RoleTypes.Engineer);
                     }
@@ -177,7 +295,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     p.RpcSetRole(RoleTypes.Impostor);
                     foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
                     {
-                        if (p2.PlayerId != p.PlayerId && !p.isRole(RoleId.Sheriff) && !p.isRole(RoleId.truelover))
+                        if (p2.PlayerId != p.PlayerId && !p.isRole(RoleId.Sheriff) && !p.isRole(RoleId.truelover) && p.IsPlayer())
                         {
                             p2.RpcSetRoleDesync(RoleTypes.Scientist, p);
                         }
@@ -213,13 +331,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             AllRoleSetClass.ImpostorPlayers = new List<PlayerControl>();
             foreach (PlayerControl Player in PlayerControl.AllPlayerControls)
             {
-                if (AllRoleSetClass.impostors.IsCheckListPlayerControl(Player))
+                if (Player.IsPlayer())
                 {
-                    AllRoleSetClass.ImpostorPlayers.Add(Player);
-                }
-                else
-                {
-                    AllRoleSetClass.CrewMatePlayers.Add(Player);
+                    if (AllRoleSetClass.impostors.IsCheckListPlayerControl(Player))
+                    {
+                        AllRoleSetClass.ImpostorPlayers.Add(Player);
+                    }
+                    else
+                    {
+                        AllRoleSetClass.CrewMatePlayers.Add(Player);
+                    }
                 }
             }
         }
@@ -700,6 +821,86 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     for (int i = 1; i <= OptionDate; i++)
                     {
                         Imponotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.JackalOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.JackalOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Jackal;
+                if (OptionDate == 10)
+                {
+                    Neutonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Neutonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.JackalFriendsOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.JackalFriendsOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.JackalFriends;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.MadMakerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.MadMakerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.MadMaker;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.DemonOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.DemonOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Demon;
+                if (OptionDate == 10)
+                {
+                    Neutonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Neutonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.TaskManagerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.TaskManagerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.TaskManager;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
                     }
                 }
             }

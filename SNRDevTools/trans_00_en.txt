@@ -133,6 +133,7 @@ Default Crewmate.
 Impostor
 Use Sabotage & Vent
 Default Impostor.
+Level Up
 Zombie
 Infect other players!
 Police
@@ -573,6 +574,24 @@ You will see players die
 Remote Sheriff
 Let's do a Remote Sheriff kill!
 Kill Teleport
+TeleportingJackal
+Teleport and kill all crewmates and impostors!
+MadMaker
+Let's get more lunatics!
+RandomMap
+Skeld
+Mira
+Polus
+AirShip
+Submerged
+Demon
+Curse the Crew and Help the Imposter!
+You have to be alive to win.
+Curse
+TaskManager
+Finish the task and mount up!
+SeerFriends
+Let's feel the activity of Jackal
 Child
 You're a treasure of the future.
 Child is Dead
