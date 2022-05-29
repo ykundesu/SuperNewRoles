@@ -1115,10 +1115,8 @@ namespace SuperNewRoles.EndGame
         {
             foreach (PlayerControl p in RoleClass.Child.ChildPlayer)
             {
-                if (!p.Data.Disconnected)
+                if (!p.Data.Disconnected && !p.isAlive())
                 {
-                    if (!p.isAlive())
-                    {
                         MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
                         Writer.Write(p.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
@@ -1126,7 +1124,6 @@ namespace SuperNewRoles.EndGame
                         __instance.enabled = false;
                             CustomEndGame((GameOverReason)CustomGameOverReason.ChildEnd, false);
                             return true;
-                    }
                 }
             }
             return false;
