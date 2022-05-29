@@ -108,6 +108,8 @@ namespace SuperNewRoles.CustomRPC
         Demon,
         TaskManager,
         SeerFriends,
+        JackalSeer,
+        SidekickSeer,
         Child,
         //RoleId
     }
@@ -130,7 +132,9 @@ namespace SuperNewRoles.CustomRPC
         ShareWinner,
         TeleporterTP,
         SidekickPromotes,
+        SidekickSeerPromotes,
         CreateSidekick,
+        CreateSidekickSeer,
         SetSpeedBoost,
         ShareCosmetics,
         SetShareNamePlate,
@@ -611,6 +615,16 @@ namespace SuperNewRoles.CustomRPC
             PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
             ChacheManager.ResetMyRoleChache();
         }
+        public static void SidekickSeerPromotes()
+        {
+            for (int i = 0; i < RoleClass.JackalSeer.SidekickSeerPlayer.Count; i++)
+            {
+                RoleClass.JackalSeer.JackalSeerPlayer.Add(RoleClass.JackalSeer.SidekickSeerPlayer[i]);
+                RoleClass.JackalSeer.SidekickSeerPlayer.RemoveAt(i);
+            }
+            PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
+            ChacheManager.ResetMyRoleChache();
+        }
         public static void CreateSidekick(byte playerid,bool IsFake) {
             var player = ModHelpers.playerById(playerid);
             if (player == null) return;
@@ -623,6 +637,23 @@ namespace SuperNewRoles.CustomRPC
                 DestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
                 player.ClearRole();
                 RoleClass.Jackal.SidekickPlayer.Add(player);
+                PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
+                ChacheManager.ResetMyRoleChache();
+            }
+        }
+        public static void CreateSidekickSeer(byte playerid, bool IsFake)
+        {
+            var player = ModHelpers.playerById(playerid);
+            if (player == null) return;
+            if (IsFake)
+            {
+                RoleClass.JackalSeer.FakeSidekickSeerPlayer.Add(player);
+            }
+            else
+            {
+                DestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
+                player.ClearRole();
+                RoleClass.JackalSeer.SidekickSeerPlayer.Add(player);
                 PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
                 ChacheManager.ResetMyRoleChache();
             }
@@ -894,6 +925,12 @@ namespace SuperNewRoles.CustomRPC
                         break;
                     case (byte)CustomRPC.DemonCurse:
                         DemonCurse(reader.ReadByte(), reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.SidekickSeerPromotes:
+                        RPCProcedure.SidekickSeerPromotes();
+                        break;
+                    case (byte)CustomRPC.CreateSidekickSeer:
+                        RPCProcedure.CreateSidekickSeer(reader.ReadByte(), reader.ReadBoolean());
                         break;
                 }
             }
