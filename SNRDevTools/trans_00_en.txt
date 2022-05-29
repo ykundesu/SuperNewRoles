@@ -599,3 +599,9 @@ Let's help Jackal with the dead detection ability that we got
 Child
 You're a treasure of the future.
 Child is Dead
+TimeStopper
+Take away freedom and kill your enemies
+Skill Cooldown
+Duration of can't Move
+Kill Cool Down
+Skill active kill cool Down
