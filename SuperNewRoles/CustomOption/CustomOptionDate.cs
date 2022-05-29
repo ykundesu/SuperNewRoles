@@ -523,6 +523,9 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption JackalSeerCreateSidekick;
         public static CustomOption JackalSeerNewJackalCreateSidekick;
 
+        public static CustomOption ChildOption;
+        public static CustomOption ChildPlayerCount;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -538,9 +541,6 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption LoversCommonTask;
         public static CustomOption LoversLongTask;
         public static CustomOption LoversShortTask;
-
-        public static CustomOption ChildOption;
-        public static CustomOption ChildPlayerCount;
 
         private static string[] GuesserCount = new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" };
         public static string[] LevelingerTexts = new string[] { };
@@ -1072,6 +1072,10 @@ namespace SuperNewRoles.CustomOption
             JackalSeerCreateSidekick = CustomOption.Create(465, false, CustomOptionType.Neutral, "JackalCreateSidekickSetting", false, JackalSeerOption);
             JackalSeerNewJackalCreateSidekick = CustomOption.Create(466, false, CustomOptionType.Neutral, "JackalNewJackalCreateSidekickSetting", false, JackalSeerCreateSidekick);
 
+
+            ChildOption = new CustomRoleOption(467, false, CustomOptionType.Crewmate, "ChildName", RoleClass.Child.color, 1);
+            ChildPlayerCount = CustomOption.Create(468, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ChildOption);
+
             QuarreledOption = CustomOption.Create(122, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, true, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
             QuarreledOnlyCrewMate = CustomOption.Create(123, true, CustomOptionType.Neutral, "QuarreledOnlyCrewMateSetting", false, QuarreledOption);
@@ -1088,9 +1092,6 @@ namespace SuperNewRoles.CustomOption
             LoversCommonTask = loversoption.Item1;
             LoversShortTask = loversoption.Item2;
             LoversLongTask = loversoption.Item3;
-
-            ChildOption = new CustomRoleOption(403, false, CustomOptionType.Crewmate, "ChildName", RoleClass.Child.color, 1);
-            ChildPlayerCount = CustomOption.Create(404, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ChildOption);
 
             SuperNewRolesPlugin.Logger.LogInfo("設定のidのMax:"+CustomOption.Max);
         }
