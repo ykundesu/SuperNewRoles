@@ -1122,8 +1122,8 @@ namespace SuperNewRoles.EndGame
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
                         CustomRPC.RPCProcedure.ShareWinner(p.PlayerId);
                         __instance.enabled = false;
-                            CustomEndGame((GameOverReason)CustomGameOverReason.ChildEnd, false);
-                            return true;
+                        CustomEndGame((GameOverReason)CustomGameOverReason.ChildEnd, false);
+                        return true;
                 }
             }
             return false;
