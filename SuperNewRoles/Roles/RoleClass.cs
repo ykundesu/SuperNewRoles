@@ -1910,7 +1910,6 @@ namespace SuperNewRoles.Roles
                 ChildPlayer = new List<PlayerControl>();
             }
         }
-        //新ロールクラス
         public static class Quarreled
         {
             public static List<List<PlayerControl>> QuarreledPlayer;
