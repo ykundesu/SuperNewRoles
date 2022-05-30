@@ -1072,8 +1072,8 @@ namespace SuperNewRoles.CustomOption
             JackalSeerCreateSidekick = CustomOption.Create(465, false, CustomOptionType.Neutral, "JackalCreateSidekickSetting", false, JackalSeerOption);
             JackalSeerNewJackalCreateSidekick = CustomOption.Create(466, false, CustomOptionType.Neutral, "JackalNewJackalCreateSidekickSetting", false, JackalSeerCreateSidekick);
 
-            ChildOption = new CustomRoleOption(467, false, CustomOptionType.Crewmate, "ChildName", RoleClass.Child.color, 1);
-            ChildPlayerCount = CustomOption.Create(468, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ChildOption);
+            ChildOption = new CustomRoleOption(467, true, CustomOptionType.Crewmate, "ChildName", RoleClass.Child.color, 1);
+            ChildPlayerCount = CustomOption.Create(468, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ChildOption);
 
             QuarreledOption = CustomOption.Create(122, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, true, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
