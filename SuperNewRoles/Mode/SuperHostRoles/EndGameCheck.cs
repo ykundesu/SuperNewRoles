@@ -24,7 +24,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (CheckAndEndGameForSabotageWin(__instance)) return false;
             if (!PlusModeHandler.isMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)) return false;
             if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
-            if (CheckAndEndGameForChildEnd(__instance)) return false;
             return false;
         }
         public static void WinNeutral(List<PlayerControl> players)
@@ -315,28 +314,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 CustomEndGame(__instance, GameOverReason.ImpostorBySabotage, false);
                 return;
             }
-        }
-        public static bool CheckAndEndGameForChildEnd(ShipStatus __instance)
-        {
-            foreach (PlayerControl p in RoleClass.Child.ChildPlayer)
-            {
-                if (!p.Data.Disconnected && !p.isAlive() && !PlayerControl.LocalPlayer.IsLovers())
-                {
-                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
-                    Writer.Write(p.PlayerId);
-                    AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                    CustomRPC.RPCProcedure.ShareWinner(p.PlayerId);
-                    Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
-                    Writer.Write((byte)CustomGameOverReason.WorkpersonWin);
-                    Writer.EndRPC();
-                    CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.ChildEnd);
-                    Chat.WinCond = CustomGameOverReason.ChildEnd;
-                    __instance.enabled = false;
-                    CustomEndGame(__instance, (GameOverReason)CustomGameOverReason.CrewmateWin, false);
-                    return true;
-                }
-            }
-            return false;
         }
     }
 }
