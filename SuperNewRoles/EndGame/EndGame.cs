@@ -566,8 +566,14 @@ namespace SuperNewRoles.EndGame
                 DemonWin = EndData == CustomGameOverReason.DemonWin;
             }
 
-
-            if (JesterWin)
+            if (ChildEND)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("子供死亡によりゲーム終了");
+                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                WinningPlayerData wpd = new WinningPlayerData(WinnerPlayer.Data);
+                AdditionalTempData.winCondition = WinCondition.ChildEnd;
+            }
+            else if (JesterWin)
             {
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
                 WinnerPlayer.Data.IsDead = false;
@@ -807,13 +813,6 @@ namespace SuperNewRoles.EndGame
                     }
                 }
                 AdditionalTempData.winCondition = WinCondition.BugEnd;
-            }
-            else if (ChildEND)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo("子供死亡によりゲーム終了");
-                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                WinningPlayerData wpd = new WinningPlayerData(WinnerPlayer.Data);
-                AdditionalTempData.winCondition = WinCondition.ChildEnd;
             }
             bool IsSingleTeam = CustomOptions.LoversSingleTeam.getBool();
             foreach (List<PlayerControl> plist in RoleClass.Lovers.LoversPlayer)
