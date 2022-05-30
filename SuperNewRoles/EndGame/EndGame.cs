@@ -254,7 +254,7 @@ namespace SuperNewRoles.EndGame
             if (AdditionalTempData.winCondition == WinCondition.ChildEnd)
             {
                 haison = true;
-                SuperNewRolesPlugin.Logger.LogInfo("ChildEndText");
+                SuperNewRolesPlugin.Logger.LogInfo("ChildEnd");
                 text = "ChildEndText";
                 textRenderer.color = RoleClass.Child.color;
                 __instance.BackgroundBar.material.SetColor("_Color", RoleClass.Workperson.color);
@@ -810,7 +810,7 @@ namespace SuperNewRoles.EndGame
             }
             else if (ChildEND)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("子供死亡");
+                SuperNewRolesPlugin.Logger.LogInfo("子供死亡によりゲーム終了");
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
                 WinningPlayerData wpd = new WinningPlayerData(WinnerPlayer.Data);
                 AdditionalTempData.winCondition = WinCondition.ChildEnd;
@@ -1115,15 +1115,15 @@ namespace SuperNewRoles.EndGame
         {
             foreach (PlayerControl p in RoleClass.Child.ChildPlayer)
             {
-                if (!p.Data.Disconnected && !p.isAlive())
+                if (!p.Data.Disconnected && !p.isAlive() && !PlayerControl.LocalPlayer.IsLovers())
                 {
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
-                        Writer.Write(p.PlayerId);
-                        AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                        CustomRPC.RPCProcedure.ShareWinner(p.PlayerId);
-                        __instance.enabled = false;
-                        CustomEndGame((GameOverReason)CustomGameOverReason.ChildEnd, false);
-                        return true;
+                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                    Writer.Write(p.PlayerId);
+                    AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                    CustomRPC.RPCProcedure.ShareWinner(p.PlayerId);
+                    __instance.enabled = false;
+                    CustomEndGame((GameOverReason)CustomGameOverReason.ChildEnd, false);
+                    return true;
                 }
             }
             return false;
