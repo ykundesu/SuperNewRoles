@@ -196,6 +196,8 @@ namespace SuperNewRoles.Intro
                     return JackalSeerIntro;
                 case (CustomRPC.RoleId.SidekickSeer):
                     return SidekickSeerIntro;
+                case (CustomRPC.RoleId.Speeder):
+                    return SpeederIntro;
                 case (CustomRPC.RoleId.Child):
                     return ChildIntro;
                 //イントロ検知

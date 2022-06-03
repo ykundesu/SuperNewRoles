@@ -15,6 +15,7 @@ using SuperNewRoles.CustomObject;
 using TMPro;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Sabotage;
+using SuperNewRoles.Patch;
 
 namespace SuperNewRoles.Roles
 {
@@ -32,6 +33,8 @@ namespace SuperNewRoles.Roles
 
         public static void ClearAndReloadRoles()
         {
+            SetNamesClass.MeetingPlayerInfos = new Dictionary<byte, TextMeshPro>();
+            SetNamesClass.PlayerInfos = new Dictionary<byte, TextMeshPro>();
             LateTask.Tasks = new List<LateTask>();
             LateTask.AddTasks = new List<LateTask>();
             BotManager.AllBots = new List<PlayerControl>();
@@ -44,7 +47,6 @@ namespace SuperNewRoles.Roles
             Roles.MadMayor.CheckedImpostor = new List<byte>();
             Roles.MadSeer.CheckedImpostor = new List<byte>();
             Roles.JackalFriends.CheckedJackal = new List<byte>();
-            Roles.SeerFriends.CheckedJackal = new List<byte>();
             Mode.BattleRoyal.main.VentData = new Dictionary<byte, int?>();
             EndGame.FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
             Mode.ModeHandler.ClearAndReload();
@@ -512,13 +514,22 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> SpeederPlayer;
             public static Color32 color = ImpostorRed;
-            //public static float CoolTime;
-            //public static float DurationTime;
+            public static float CoolTime;
+            public static float DurationTime;
+            public static bool IsSpeedDown;
+            private static Sprite ButtonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (ButtonSprite) return ButtonSprite;
+                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SpeedDownButton.png", 115f);
+                return ButtonSprite;
+            }
             public static void ClearAndReload()
             {
                 SpeederPlayer = new List<PlayerControl>();
-                //CoolTime = CustomOptions.SpeederCoolTime.getFloat();
-                //DurationTime = CustomOptions.SpeederDurationTime.getFloat();
+                CoolTime = CustomOptions.SpeederCoolTime.getFloat();
+                DurationTime = CustomOptions.SpeederDurationTime.getFloat();
+                IsSpeedDown = false;
             }
         }
         public static class Guesser
@@ -1851,7 +1862,6 @@ namespace SuperNewRoles.Roles
                     Short = PlayerControl.GameOptions.NumShortTasks;
                 }
                 JackalCheckTask = (int)(AllTask * (int.Parse(CustomOptions.SeerFriendsCheckJackalTask.getString().Replace("%", "")) / 100f));
-                Roles.SeerFriends.CheckedJackal = new List<byte>();
             }
         }
 
@@ -1884,15 +1894,14 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 JackalSeerPlayer = new List<PlayerControl>();
+                SidekickSeerPlayer = new List<PlayerControl>();
+                FakeSidekickSeerPlayer = new List<PlayerControl>();
 
                 deadBodyPositions = new List<Vector3>();
                 limitSoulDuration = CustomOptions.JackalSeerLimitSoulDuration.getBool();
                 soulDuration = CustomOptions.JackalSeerSoulDuration.getFloat();
                 mode = CustomOptions.JackalSeerMode.getSelection();
 
-                JackalSeerPlayer = new List<PlayerControl>();
-                SidekickSeerPlayer = new List<PlayerControl>();
-                FakeSidekickSeerPlayer = new List<PlayerControl>();
                 KillCoolDown = CustomOptions.JackalSeerKillCoolDown.getFloat();
                 IsUseVent = CustomOptions.JackalSeerUseVent.getBool();
                 IsUseSabo = CustomOptions.JackalSeerUseSabo.getBool();
