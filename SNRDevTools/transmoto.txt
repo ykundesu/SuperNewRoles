@@ -616,6 +616,12 @@ JackalSeerName
 JackalSeerTitle1
 SidekickSeerName
 SidekickSeerTitle1
+ArsonistName
+ArsonistTitle1
+ArsonistDurationTimeSetting
+ArsonistDouseButtonName
+ArsonistIgniteButtonName
+ArsonistDescription
 ChiefName
 ChiefTitle1
 ChildName

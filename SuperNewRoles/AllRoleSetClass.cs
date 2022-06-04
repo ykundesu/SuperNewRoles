@@ -850,7 +850,9 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.SeerFriendsPlayerCount.getFloat();
                 case (RoleId.JackalSeer):
                     return CustomOption.CustomOptions.JackalSeerPlayerCount.getFloat();
-                    case (RoleId.Chief):
+                case (RoleId.Arsonist):
+                    return CustomOption.CustomOptions.ArsonistPlayerCount.getFloat();
+                case (RoleId.Chief):
                     return CustomOption.CustomOptions.ChiefPlayerCount.getFloat();
                 case (RoleId.Child):
                     return CustomOption.CustomOptions.ChildPlayerCount.getFloat();
@@ -930,7 +932,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-            
+
         }
     }
 }
