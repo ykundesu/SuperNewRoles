@@ -157,6 +157,7 @@ namespace SuperNewRoles.EndGame
             textRenderer = bonusTextObject.GetComponent<TMPro.TMP_Text>();
             textRenderer.text = "";
             var text = "";
+            var haison = false;
             switch (AdditionalTempData.winCondition)
             {
                 case WinCondition.LoversWin:
@@ -219,6 +220,12 @@ namespace SuperNewRoles.EndGame
                     textRenderer.color = RoleClass.Demon.color;
                     __instance.BackgroundBar.material.SetColor("_Color", RoleClass.Demon.color);
                     break;
+                case WinCondition.ChildEnd:
+                    haison = true;
+                    text = "ChildEndText";
+                    textRenderer.color = RoleClass.Child.color;
+                    __instance.BackgroundBar.material.SetColor("_Color", RoleClass.Workperson.color);
+                    break;
                 default:
                     switch (AdditionalTempData.gameOverReason)
                     {
@@ -237,15 +244,6 @@ namespace SuperNewRoles.EndGame
                             break;
                     }
                     break;
-            }
-            var haison = false;
-            if (AdditionalTempData.winCondition == WinCondition.ChildEnd)
-            {
-                haison = true;
-                SuperNewRolesPlugin.Logger.LogInfo("ChildEnd");
-                text = "ChildEndText";
-                textRenderer.color = RoleClass.Child.color;
-                __instance.BackgroundBar.material.SetColor("_Color", RoleClass.Workperson.color);
             }
             if (text == "HAISON") {
                 haison = true;
