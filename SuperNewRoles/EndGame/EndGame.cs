@@ -1101,6 +1101,7 @@ namespace SuperNewRoles.EndGame
             {
                 if (!p.Data.Disconnected && !p.isAlive() && !p.IsLovers())
                 {
+                    
                     MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
                     Writer.Write(p.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(Writer);
