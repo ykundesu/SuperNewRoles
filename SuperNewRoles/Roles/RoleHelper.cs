@@ -525,6 +525,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.JackalSeer):
                     Roles.RoleClass.JackalSeer.JackalSeerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Chief):
+                    Roles.RoleClass.Chief.ChiefPlayer.Add(player);
+                    break;
                 case (CustomRPC.RoleId.Child):
                     Roles.RoleClass.Child.ChildPlayer.Add(player);
                     break;
@@ -803,6 +806,9 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.SidekickSeer):
                     Roles.RoleClass.JackalSeer.SidekickSeerPlayer.RemoveAll(ClearRemove);
+                    break;
+                    case (CustomRPC.RoleId.Chief):
+                    Roles.RoleClass.Chief.ChiefPlayer.RemoveAll(ClearRemove);
                     break;
                 case (CustomRPC.RoleId.Child):
                     Roles.RoleClass.Child.ChildPlayer.RemoveAll(ClearRemove);
@@ -1559,6 +1565,10 @@ namespace SuperNewRoles
                 else if (Roles.RoleClass.JackalSeer.SidekickSeerPlayer.IsCheckListPlayerControl(player))
                 {
                     return CustomRPC.RoleId.SidekickSeer;
+                }
+                else if (Roles.RoleClass.Chief.ChiefPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Chief;
                 }
                 else if (Roles.RoleClass.SeerFriends.SeerFriendsPlayer.IsCheckListPlayerControl(player))
                 {

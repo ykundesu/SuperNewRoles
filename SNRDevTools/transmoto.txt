@@ -616,6 +616,8 @@ JackalSeerName
 JackalSeerTitle1
 SidekickSeerName
 SidekickSeerTitle1
+ChiefName
+ChiefTitle1
 ChildName
 ChildTitle1
 ChildEndText
