@@ -22,14 +22,14 @@ namespace SuperNewRoles.Roles
                         {
                             if (p.isAlive())
                             {
-                                p.RpcMurderPlayer(p);
+                                RPCProcedure.RPCMurderPlayer(p.PlayerId, p.PlayerId, byte.MaxValue);
                             }
                         }
                         foreach (PlayerControl p in RoleClass.Opportunist.OpportunistPlayer)
                         {
                             if (p.isAlive())
                             {
-                                p.RpcMurderPlayer(p);
+                                RPCProcedure.RPCMurderPlayer(p.PlayerId, p.PlayerId, byte.MaxValue);
                             }
                         }
                     }
