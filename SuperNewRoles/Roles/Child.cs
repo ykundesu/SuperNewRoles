@@ -22,6 +22,7 @@ namespace SuperNewRoles.Roles
                         {
                             if (p.isAlive())
                             {
+                                SuperNewRolesPlugin.Logger.LogInfo("神自滅");
                                 RPCProcedure.RPCMurderPlayer(p.PlayerId, p.PlayerId, byte.MaxValue);
                             }
                         }
@@ -29,6 +30,7 @@ namespace SuperNewRoles.Roles
                         {
                             if (p.isAlive())
                             {
+                                SuperNewRolesPlugin.Logger.LogInfo("オポチュ自滅");
                                 RPCProcedure.RPCMurderPlayer(p.PlayerId, p.PlayerId, byte.MaxValue);
                             }
                         }
@@ -41,6 +43,7 @@ namespace SuperNewRoles.Roles
                             {
                                 if (p.isAlive())
                                 {
+                                    SuperNewRolesPlugin.Logger.LogInfo("神自滅");
                                     p.RpcMurderPlayer(p);
                                 }
                             }
@@ -48,6 +51,7 @@ namespace SuperNewRoles.Roles
                             {
                                 if (p.isAlive())
                                 {
+                                    SuperNewRolesPlugin.Logger.LogInfo("オポチュ自滅");
                                     p.RpcMurderPlayer(p);
                                 }
                             }
