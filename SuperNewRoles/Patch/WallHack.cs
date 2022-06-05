@@ -16,8 +16,8 @@ namespace SuperNewRoles.Patch
             {
                 if (Input.GetKeyDown(KeyCode.LeftControl))
                 {
-                    if (AmongUsClient.Instance?.GameState != InnerNet.InnerNetClient.GameStates.Started ||
-                    AmongUsClient.Instance?.GameMode == GameModes.FreePlay)
+                    if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started ||
+                    AmongUsClient.Instance.GameMode == GameModes.FreePlay)
                     {
                         PlayerControl.LocalPlayer.Collider.offset = new Vector2(0f, 127f);
                     }
