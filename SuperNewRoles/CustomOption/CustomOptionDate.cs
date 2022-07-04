@@ -536,6 +536,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption TunaStoppingTime;
         public static CustomOption TunaIsUseVent;
         public static CustomOption TunaIsAddWin;
+        public static CustomOption TunaIsWinWithCrew;
 
         public static CustomRoleOption MafiaOption;
         public static CustomOption MafiaPlayerCount;
@@ -1259,7 +1260,10 @@ namespace SuperNewRoles.CustomOption
             TunaStoppingTime = CustomOption.Create(554, true, CustomOptionType.Neutral, "TunaStoppingTimeSetting", 1f, 1f, 3f, 1f, TunaOption);
             TunaIsUseVent = CustomOption.Create(555, true, CustomOptionType.Neutral, "MadMateUseVentSetting", false, TunaOption);
             TunaIsAddWin = CustomOption.Create(618, true, CustomOptionType.Neutral, "TunaAddWinSetting", false, TunaOption);
-
+            if (RoleClass.Tuna.IsTunaAddWin)
+            {
+                TunaIsWinWithCrew = CustomOption.Create(619, true, CustomOptionType.Neutral, "TunaWinWithCrewSetting", false, TunaOption);
+            }
             MafiaOption = new CustomRoleOption(602, true, CustomOptionType.Impostor, "MafiaName", RoleClass.Mafia.color, 1);
             MafiaPlayerCount = CustomOption.Create(603, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], MafiaOption);
 
