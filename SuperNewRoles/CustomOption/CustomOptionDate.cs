@@ -20,8 +20,6 @@ namespace SuperNewRoles.CustomOption
 
         public static string[] rates4 = new string[] { "0%", "25%", "50%", "75%", "100%" };
 
-        public static string[] WinType = new string[] { "SoloVictoryText", "AdditionalVictoryText", "VictororyWithCrewText", "VictoryWithImpostorText" };
-
         public static string[] presets = new string[] { "preset1", "preset2", "preset3", "preset4", "preset5", "preset6", "preset7", "preset8", "preset9", "preset10" };
         public static CustomOption presetSelection;
 
@@ -537,7 +535,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption TunaPlayerCount;
         public static CustomOption TunaStoppingTime;
         public static CustomOption TunaIsUseVent;
-        public static CustomOption TunaWinType;
+        public static CustomOption TunaIsAddWin;
 
         public static CustomRoleOption MafiaOption;
         public static CustomOption MafiaPlayerCount;
@@ -1260,7 +1258,7 @@ namespace SuperNewRoles.CustomOption
             TunaPlayerCount = CustomOption.Create(553, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], TunaOption);
             TunaStoppingTime = CustomOption.Create(554, true, CustomOptionType.Neutral, "TunaStoppingTimeSetting", 1f, 1f, 3f, 1f, TunaOption);
             TunaIsUseVent = CustomOption.Create(555, true, CustomOptionType.Neutral, "MadMateUseVentSetting", false, TunaOption);
-            TunaWinType = CustomOption.Create(618, true, CustomOptionType.Neutral, "TunaWinTypeSetting", WinType, TunaOption); 
+            TunaIsAddWin = CustomOption.Create(618, true, CustomOptionType.Neutral, "TunaAddWinSetting", false, TunaOption);
 
             MafiaOption = new CustomRoleOption(602, true, CustomOptionType.Impostor, "MafiaName", RoleClass.Mafia.color, 1);
             MafiaPlayerCount = CustomOption.Create(603, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], MafiaOption);
@@ -1277,7 +1275,7 @@ namespace SuperNewRoles.CustomOption
             BlackCatIsUseVent = CustomOption.Create(563, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, BlackCatOption);
             BlackCatIsImpostorLight = CustomOption.Create(564, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, BlackCatOption);
 
-            SecretlyKillerOption = new CustomRoleOption(607, false, CustomOptionType.Impostor, "SecretlyKillerName",RoleClass.SecretlyKiller.color, 1);
+            SecretlyKillerOption = new CustomRoleOption(607, false, CustomOptionType.Impostor, "SecretlyKillerName", RoleClass.SecretlyKiller.color, 1);
             SecretlyKillerPlayerCount = CustomOption.Create(608, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SecretlyKillerOption);
             SecretlyKillerKillCoolTime = CustomOption.Create(609, false, CustomOptionType.Impostor, "SheriffCoolDownSetting", 2.5f, 2.5f, 60f, 2.5f, SecretlyKillerOption);
             SecretlyKillerIsKillCoolTimeChange = CustomOption.Create(610, false, CustomOptionType.Impostor, "SettingCoolCharge", true, SecretlyKillerOption);
@@ -1285,7 +1283,7 @@ namespace SuperNewRoles.CustomOption
             SecretlyKillerSecretKillLimit = CustomOption.Create(612, false, CustomOptionType.Impostor, "SettingLimitName", 1f, 0f, 99f, 1f, SecretlyKillerOption);
             SecretlyKillerSecretKillCoolTime = CustomOption.Create(613, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 45f, 2.5f, 60f, 2.5f, SecretlyKillerOption);
 
-            SpyOption = new CustomRoleOption(614, true, CustomOptionType.Crewmate, "SpyName",RoleClass.Spy.color, 1);
+            SpyOption = new CustomRoleOption(614, true, CustomOptionType.Crewmate, "SpyName", RoleClass.Spy.color, 1);
             SpyPlayerCount = CustomOption.Create(615, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpyOption);
             SpyCanUseVent = CustomOption.Create(617, true, CustomOptionType.Crewmate, "JesterIsVentSetting", false, SpyOption);
             //表示設定

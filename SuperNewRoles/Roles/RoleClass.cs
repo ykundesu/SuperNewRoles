@@ -2202,6 +2202,7 @@ namespace SuperNewRoles.Roles
             public static bool IsUseVent;
             public static Dictionary<byte, float> Timers;
             public static bool IsMeetingEnd;
+            public static bool IsTunaAddWin;
             public static void ClearAndReload()
             {
                 TunaPlayer = new();
@@ -2211,6 +2212,7 @@ namespace SuperNewRoles.Roles
                 if (Mode.ModeHandler.isMode(Mode.ModeId.Default)) Timer = StoppingTime;
                 IsUseVent = CustomOptions.TunaIsUseVent.getBool();
                 IsMeetingEnd = false;
+                IsTunaAddWin = CustomOptions.TunaIsAddWin.getBool();
                 if (Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles))
                 {
                     Timers = new();

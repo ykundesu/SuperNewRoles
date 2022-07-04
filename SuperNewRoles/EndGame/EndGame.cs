@@ -818,11 +818,17 @@ namespace SuperNewRoles.EndGame
             {
                 if (p.isAlive())
                 {
-                    TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                    WinningPlayerData wpd = new(p.Data);
-                    TempData.winners.Add(wpd);
-                    AdditionalTempData.winCondition = WinCondition.TunaWin;
-
+                    if (RoleClass.Tuna.IsTunaAddWin)
+                    {
+                        TempData.winners.Add(new WinningPlayerData(p.Data));
+                    }
+                    else
+                    {
+                        TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                        WinningPlayerData wpd = new(p.Data);
+                        TempData.winners.Add(wpd);
+                        AdditionalTempData.winCondition = WinCondition.TunaWin;
+                    }
                 }
             }
 
@@ -853,7 +859,7 @@ namespace SuperNewRoles.EndGame
             if (QuarreledWin)
             {
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                List<PlayerControl> winplays = new(){ WinnerPlayer };
+                List<PlayerControl> winplays = new() { WinnerPlayer };
                 winplays.Add(WinnerPlayer.GetOneSideQuarreled());
                 foreach (PlayerControl p in winplays)
                 {
