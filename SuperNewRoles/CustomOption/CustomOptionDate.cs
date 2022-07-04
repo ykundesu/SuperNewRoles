@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -19,6 +19,8 @@ namespace SuperNewRoles.CustomOption
         public static string[] rates = new string[] { "0%", "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%" };
 
         public static string[] rates4 = new string[] { "0%", "25%", "50%", "75%", "100%" };
+
+        public static string[] WinType = new string[] { "SoloVictoryText", "AdditionalVictoryText", "VictororyWithCrewText", "VictoryWithImpostorText" };
 
         public static string[] presets = new string[] { "preset1", "preset2", "preset3", "preset4", "preset5", "preset6", "preset7", "preset8", "preset9", "preset10" };
         public static CustomOption presetSelection;
@@ -535,6 +537,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption TunaPlayerCount;
         public static CustomOption TunaStoppingTime;
         public static CustomOption TunaIsUseVent;
+        public static CustomOption TunaWinType;
 
         public static CustomRoleOption MafiaOption;
         public static CustomOption MafiaPlayerCount;
@@ -1257,6 +1260,7 @@ namespace SuperNewRoles.CustomOption
             TunaPlayerCount = CustomOption.Create(553, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], TunaOption);
             TunaStoppingTime = CustomOption.Create(554, true, CustomOptionType.Neutral, "TunaStoppingTimeSetting", 1f, 1f, 3f, 1f, TunaOption);
             TunaIsUseVent = CustomOption.Create(555, true, CustomOptionType.Neutral, "MadMateUseVentSetting", false, TunaOption);
+            TunaWinType = CustomOption.Create(618, true, CustomOptionType.Neutral, "TunaWinTypeSetting", WinType, TunaOption); 
 
             MafiaOption = new CustomRoleOption(602, true, CustomOptionType.Impostor, "MafiaName", RoleClass.Mafia.color, 1);
             MafiaPlayerCount = CustomOption.Create(603, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], MafiaOption);
