@@ -816,19 +816,16 @@ namespace SuperNewRoles.EndGame
             }
             foreach (PlayerControl p in RoleClass.Tuna.TunaPlayer)
             {
-                if (p.isAlive())
+                if (p.isAlive() && !RoleClass.Tuna.IsTunaWinWithCrew)
                 {
-                    if (RoleClass.Tuna.IsTunaAddWin)
-                    {
-                        TempData.winners.Add(new WinningPlayerData(p.Data));
-                    }
-                    else
-                    {
-                        TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                        WinningPlayerData wpd = new(p.Data);
-                        TempData.winners.Add(wpd);
-                        AdditionalTempData.winCondition = WinCondition.TunaWin;
-                    }
+                    var TunaWin = RoleClass.Tuna.IsTunaAddWin ? true : false;
+
+                    TempData.winners.Add(new WinningPlayerData(p.Data));
+
+                    TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                    WinningPlayerData wpd = new(p.Data);
+                    TempData.winners.Add(wpd);
+                    AdditionalTempData.winCondition = WinCondition.TunaWin;
                 }
             }
 
