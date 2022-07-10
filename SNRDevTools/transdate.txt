@@ -759,6 +759,7 @@ PositionSwapperSwapText2,Position swapper swapped you!\n by the way，ykundesu i
 TunaName,Tuna,マグロ
 TunaTitle1,Always move!,常に動け！
 TunaStoppingTimeSetting,Stopping Time,止まれる時間
+TunaAddWinSetting,Add Win,追加勝利
 BlackCatName,Black Cat,黒猫
 BlackCatTitle1,Give your life for your master.,主人のために命を捧げよ
 MafiaName,Mafia,マフィア
@@ -782,5 +783,6 @@ clairvoyantmode,ClairvoyantMode,千里眼モード
 clairvoyantCoolTime,ClairvoyantCoolTime,千里眼のクールダウン
 clairvoyantDurationTime,ClairvoyantDurationTime,千里眼の継続時間
 ClairvoyantButtonName,Clairvoyant!,千里眼
-LadderDead,Ladder Dead,転落死
-LadderDeadChance,Ladder Dead Chance,転落死する確率
+LadderDead,Ladder Death,転落死
+LadderDeadChance,Ladder Death Chance,転落死する確率
+,,
