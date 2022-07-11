@@ -5,6 +5,7 @@ using System.Linq;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
+using SuperNewRoles.AntiCheat;
 using SuperNewRoles.CustomCosmetics.ShareCosmetics;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.EndGame;
@@ -282,6 +283,8 @@ namespace SuperNewRoles.CustomRPC
         }
         public static void CustomEndGame(GameOverReason reason, bool showAd)
         {
+            if (!CheckRpc.CheckCustomEndGame((CustomGameOverReason)reason, showAd)) return;
+            MapUtilities.CachedShipStatus.enabled = false;
             CheckGameEndPatch.CustomEndGame(reason, showAd);
         }
         public static void UseStuntmanCount(byte playerid)
@@ -327,6 +330,7 @@ namespace SuperNewRoles.CustomRPC
         {
             var player = ModHelpers.playerById(playerid);
             if (player == null) return;
+            if (!CheckRpc.CheckUncheckedSetVanilaRole(player, (RoleTypes)roletype)) return;
             DestroyableSingleton<RoleManager>.Instance.SetRole(player, (RoleTypes)roletype);
             player.Data.Role.Role = (RoleTypes)roletype;
         }
@@ -474,6 +478,7 @@ namespace SuperNewRoles.CustomRPC
         }
         public static void SetRoomTimerRPC(byte min, byte seconds)
         {
+            if (!CheckRpc.CheckSetRoomTimerRPC(min, seconds)) return;
             Patch.ShareGameVersion.timer = (min * 60) + seconds;
         }
         public static void CountChangerSetRPC(byte sourceid, byte targetid)
@@ -529,7 +534,9 @@ namespace SuperNewRoles.CustomRPC
         public static void SetRole(byte playerid, byte RPCRoleId)
         {
             var player = ModHelpers.playerById(playerid);
+            if (player == null) return;
             var roleId = (RoleId)RPCRoleId;
+            if (!CheckRpc.CheckSetRole(player, roleId)) return;
             if (!roleId.isGhostRole())
             {
                 player.ClearRole();
@@ -550,11 +557,10 @@ namespace SuperNewRoles.CustomRPC
         }
         public static void SheriffKill(byte SheriffId, byte TargetId, bool MissFire)
         {
-            SuperNewRolesPlugin.Logger.LogInfo("シェリフ");
             PlayerControl sheriff = ModHelpers.playerById(SheriffId);
             PlayerControl target = ModHelpers.playerById(TargetId);
             if (sheriff == null || target == null) return;
-            SuperNewRolesPlugin.Logger.LogInfo("通過");
+            if (!CheckRpc.CheckSheriffKill(sheriff, target)) return;
 
             if (MissFire)
             {
@@ -586,8 +592,9 @@ namespace SuperNewRoles.CustomRPC
         {
             PlayerControl sheriff = ModHelpers.playerById(SheriffId);
             PlayerControl target = ModHelpers.playerById(TargetId);
-            if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(target.KillSfx, false, 0.8f);
             if (sheriff == null || target == null) return;
+            if (!CheckRpc.CheckMeetingSheriffKill(sheriff, target)) return;
+            if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(target.KillSfx, false, 0.8f);
             if (!PlayerControl.LocalPlayer.isAlive())
             {
                 FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "は" + target.name + "をシェリフキルした！");
@@ -660,9 +667,6 @@ namespace SuperNewRoles.CustomRPC
             {
                 Roles.Clergyman.LightOutStartRPC();
             }
-            else
-            {
-            }
         }
         public static void SetSpeedBoost(bool Is, byte id)
         {
@@ -734,6 +738,7 @@ namespace SuperNewRoles.CustomRPC
         {
             var player = ModHelpers.playerById(playerid);
             if (player == null) return;
+            if (!CheckRpc.CheckCreateSidekick(player)) return;
             if (IsFake)
             {
                 RoleClass.Jackal.FakeSidekickPlayer.Add(player);
@@ -751,6 +756,7 @@ namespace SuperNewRoles.CustomRPC
         {
             var player = ModHelpers.playerById(playerid);
             if (player == null) return;
+            if (!CheckRpc.CheckCreateSidekick(player)) return;
             if (IsFake)
             {
                 RoleClass.JackalSeer.FakeSidekickSeerPlayer.Add(player);
@@ -975,6 +981,8 @@ namespace SuperNewRoles.CustomRPC
             {
                 try
                 {
+                    PlayerControl player = null;
+                    byte playerid = byte.MaxValue;
                     byte packetId = callId;
                     switch ((CustomRPC)packetId)
                     {
@@ -1058,7 +1066,7 @@ namespace SuperNewRoles.CustomRPC
                             SetQuarreled(reader.ReadByte(), reader.ReadByte());
                             break;
                         case CustomRPC.SidekickPromotes:
-                            SidekickPromotes();
+                            if (CheckRpc.CheckSidekickPromotes(RoleId.Sidekick)) SidekickPromotes();
                             break;
                         case CustomRPC.CreateSidekick:
                             CreateSidekick(reader.ReadByte(), reader.ReadBoolean());
@@ -1094,7 +1102,14 @@ namespace SuperNewRoles.CustomRPC
                             SetScientistRPC(reader.ReadBoolean(), reader.ReadByte());
                             break;
                         case CustomRPC.ReviveRPC:
-                            ReviveRPC(reader.ReadByte());
+                            playerid = reader.ReadByte();
+                            player = ModHelpers.playerById(playerid);
+                            if (player == null)
+                            {
+                                Logger.Error($"ReviveRPCでプレイヤーが取得できませんでした。ID:{playerid} 送信者:{__instance.Data.PlayerName}", "CustomRPC");
+                                return;
+                            }
+                            if (CheckRpc.CheckRevive(player)) ReviveRPC(player.PlayerId);
                             break;
                         case CustomRPC.SetHaison:
                             SetHaison();
@@ -1138,7 +1153,6 @@ namespace SuperNewRoles.CustomRPC
                         case CustomRPC.CustomEndGame:
                             if (AmongUsClient.Instance.AmHost)
                             {
-                                MapUtilities.CachedShipStatus.enabled = false;
                                 CustomEndGame((GameOverReason)reader.ReadByte(), reader.ReadBoolean());
                             }
                             break;
@@ -1152,7 +1166,7 @@ namespace SuperNewRoles.CustomRPC
                             DemonCurse(reader.ReadByte(), reader.ReadByte());
                             break;
                         case CustomRPC.SidekickSeerPromotes:
-                            SidekickSeerPromotes();
+                            if (CheckRpc.CheckSidekickPromotes(RoleId.SidekickSeer)) SidekickSeerPromotes();
                             break;
                         case CustomRPC.CreateSidekickSeer:
                             CreateSidekickSeer(reader.ReadByte(), reader.ReadBoolean());

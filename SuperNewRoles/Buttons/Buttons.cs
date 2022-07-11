@@ -972,8 +972,8 @@ namespace SuperNewRoles.Buttons
                     var target = setTarget();
                     if (!target.Data.Role.IsImpostor && target && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && !RoleClass.MadMaker.IsCreateMadmate)
                     {
-                        target.RPCSetRoleUnchecked(RoleTypes.Crewmate);
                         target.setRoleRPC(RoleId.MadMate);
+                        target.RPCSetRoleUnchecked(RoleTypes.Crewmate);
                         RoleClass.MadMaker.IsCreateMadmate = true;
                     }
                     else if (target.Data.Role.IsImpostor)
@@ -1622,8 +1622,8 @@ namespace SuperNewRoles.Buttons
                     var target = setTarget();
                     if (!target.Data.Role.IsImpostor && target && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && RoleClass.EvilHacker.IsCreateMadmate)
                     {
-                        target.RPCSetRoleUnchecked(RoleTypes.Crewmate);
                         target.setRoleRPC(RoleId.MadMate);
+                        target.RPCSetRoleUnchecked(RoleTypes.Crewmate);
                         RoleClass.EvilHacker.IsCreateMadmate = false;
                     }
                     else if (target.Data.Role.IsImpostor)
