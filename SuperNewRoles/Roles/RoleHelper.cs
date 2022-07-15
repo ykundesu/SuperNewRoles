@@ -600,6 +600,9 @@ namespace SuperNewRoles
                 case (RoleId.ToiletFan):
                     RoleClass.ToiletFan.ToiletFanPlayer.Add(player);
                     break;
+                case (RoleId.SuperVitaler):
+                    RoleClass.SuperVitaler.SuperVitalerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -958,6 +961,9 @@ namespace SuperNewRoles
                 case (RoleId.ToiletFan):
                     RoleClass.ToiletFan.ToiletFanPlayer.RemoveAll(ClearRemove);
                     break;
+                case (RoleId.SuperVitaler):
+                    RoleClass.SuperVitaler.SuperVitalerPlayer.RemoveAll(ClearRemove);
+                    break;
                     //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
@@ -1271,6 +1277,10 @@ namespace SuperNewRoles
                     case RoleId.Kunoichi:
                         addition = RoleClass.Kunoichi.KillCoolTime;
                         break;
+                    case RoleId.SuperVitaler:
+                        PlayerControl.GameOptions.RoleOptions.ScientistBatteryCharge = -1f;
+                        PlayerControl.GameOptions.RoleOptions.ScientistCooldown = 10000f;
+                        break;
                 }
             }
             return addition;
@@ -1466,6 +1476,10 @@ namespace SuperNewRoles
                 else if (RoleClass.Neet.NeetPlayer.IsCheckListPlayerControl(player)) return RoleId.Neet;
                 else if (RoleClass.FastMaker.FastMakerPlayer.IsCheckListPlayerControl(player)) return RoleId.FastMaker;
                 else if (RoleClass.ToiletFan.ToiletFanPlayer.IsCheckListPlayerControl(player)) return RoleId.ToiletFan;
+                else if (RoleClass.SuperVitaler.SuperVitalerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return RoleId.SuperVitaler;
+                }
                 //ロールチェック
             }
             catch (Exception e)
