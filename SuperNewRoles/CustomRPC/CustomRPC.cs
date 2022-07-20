@@ -119,6 +119,7 @@ namespace SuperNewRoles.CustomRPC
         GhostMechanic,
         EvilHacker,
         HauntedWolf,
+        Conjurer,
         PositionSwapper,
         Tuna,
         Mafia,
@@ -199,6 +200,8 @@ namespace SuperNewRoles.CustomRPC
         UseCameraTime,
         UseVitalsTime,
         FixLights,
+        AddMarker,
+        TriangleKill,
         RandomSpawn,
         KunaiKill,
         SetSecretRoomTeleportStatus,
@@ -957,6 +960,25 @@ namespace SuperNewRoles.CustomRPC
         {
             Patch.VitalsPatch.RestrictVitalsTime -= time;
         }*/
+        public static void AddMarker(byte[] buff)
+        {
+            Vector3 position = Vector3.zero;
+            position.x = BitConverter.ToSingle(buff, 0 * sizeof(float));
+            position.y = BitConverter.ToSingle(buff, 1 * sizeof(float));
+            new JackInTheBox(position);
+        }
+        public static void TraingleKill()
+        {
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+            {
+                //魔術師1、２,３個目の座標とプレイヤーの座標を代入
+                if (Conjurer.TriangleArea(RoleClass.Conjurer.pos1, RoleClass.Conjurer.pos2, RoleClass.Conjurer.pos3, PlayerControl.LocalPlayer.transform.position))
+                {
+                    //殺す
+                    PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                }
+            }
+        }
         public static void RandomSpawn(byte playerId, byte locId)
         {
             HudManager.Instance.StartCoroutine(Effects.Lerp(3f, new Action<float>((p) =>
@@ -1228,6 +1250,12 @@ namespace SuperNewRoles.CustomRPC
                         UseVitalTime(reader.ReadSingle());
                         break;
                         */
+                        case CustomRPC.AddMarker:
+                            RPCProcedure.AddMarker(reader.ReadBytesAndSize());
+                            break;
+                        case CustomRPC.TriangleKill:
+                            TraingleKill();
+                            break;
                         case CustomRPC.FixLights:
                             FixLights();
                             break;

@@ -42,6 +42,7 @@ namespace SuperNewRoles.Roles
             Mode.BattleRoyal.Main.VentData = new();
             EndGame.FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
             Mode.ModeHandler.ClearAndReload();
+            JackInTheBox.clearJackInTheBoxes();
             MapCustoms.AdditionalVents.ClearAndReload();
             MapCustoms.SpecimenVital.ClearAndReload();
             MapCustoms.MoveElecPad.ClearAndReload();
@@ -140,6 +141,7 @@ namespace SuperNewRoles.Roles
             GhostMechanic.ClearAndReload();
             EvilHacker.ClearAndReload();
             HauntedWolf.ClearAndReload();
+            Conjurer.ClearAndReload();
             PositionSwapper.ClearAndReload();
             Tuna.ClearAndReload();
             Mafia.ClearAndReload();
@@ -2254,7 +2256,41 @@ namespace SuperNewRoles.Roles
                 ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.BlackCatCheckImpostorTask.GetString().Replace("%", "")) / 100f));
             }
         }
-
+        public static class Conjurer
+        {
+            public static List<PlayerControl> ConjurerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float CoolTime;
+            public static bool ScreenFrash;
+            public static int AddedCount;
+            public static Vector3 pos1;
+            public static Vector3 pos2;
+            public static Vector3 pos3;
+            private static Sprite AddbuttonSprite;
+            private static Sprite StartbuttonSprite;
+            public static Sprite GetAddButtonSprite()
+            {
+                if (AddbuttonSprite) return AddbuttonSprite;
+                AddbuttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ConjurerAddButton.png", 115f);
+                return AddbuttonSprite;
+            }
+            public static Sprite GetStartButtonSprite()
+            {
+                if (StartbuttonSprite) return StartbuttonSprite;
+                StartbuttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ConjurerStartButton.png", 115f);
+                return StartbuttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                ConjurerPlayer = new List<PlayerControl>();
+                CoolTime = CustomOptions.ConjurerCoolTime.GetFloat();
+                ScreenFrash = CustomOptions.ConjurerScreenFrash.GetBool();
+                AddedCount = 0;
+                pos1 = new();
+                pos2 = new();
+                pos3 = new();
+            }
+        }
         public static class SecretlyKiller
         {
             public static List<PlayerControl> SecretlyKillerPlayer;

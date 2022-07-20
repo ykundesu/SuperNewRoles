@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using SuperNewRoles.CustomOption;
@@ -68,7 +69,6 @@ namespace SuperNewRoles.Intro
             System.Random r1 = new();
             return ModTranslation.GetString(name + "Title" + r1.Next(1, num + 1).ToString());
         }
-
         public static IntroDate CrewmateIntro = new("CrewMate", Color.white, 1, RoleId.DefaultRole);
         public static IntroDate ImpostorIntro = new("Impostor", RoleClass.ImpostorRed, 1, RoleId.DefaultRole, TeamRoleType.Impostor);
         public static IntroDate SoothSayerIntro = new("SoothSayer", RoleClass.SoothSayer.color, 1, RoleId.SoothSayer);
@@ -181,6 +181,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate SuicideWisherIntro = new("SuicideWisher", RoleClass.SuicideWisher.color, 1, RoleId.SuicideWisher, TeamRoleType.Impostor);
         public static IntroDate NeetIntro = new("Neet", RoleClass.Neet.color, 1, RoleId.Neet, TeamRoleType.Neutral);
         public static IntroDate FastMakerIntro = new("FastMaker", RoleClass.FastMaker.color, 1, RoleId.FastMaker, TeamRoleType.Impostor);
+        public static IntroDate ConjurerIntro = new("Conjurer", RoleClass.Conjurer.color, 1, CustomRPC.RoleId.Conjurer,TeamRoleType.Impostor);
         public static IntroDate ToiletFanIntro = new("ToiletFan", RoleClass.ToiletFan.color, 1, RoleId.ToiletFan, TeamRoleType.Crewmate);
         //イントロオブジェ
     }

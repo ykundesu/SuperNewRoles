@@ -1480,3 +1480,4 @@ when alive.
 | Does not overlap with Quarreled | You can set whether or not to duplicate with Quarreled. 
 
 ----------------------- 
+

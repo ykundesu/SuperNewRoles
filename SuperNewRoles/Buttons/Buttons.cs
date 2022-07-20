@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.Buttons;
+using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.EndGame;
 using SuperNewRoles.Helpers;
@@ -55,6 +57,8 @@ namespace SuperNewRoles.Buttons
         public static CustomButton GhostMechanicRepairButton;
         public static CustomButton EvilHackerButton;
         public static CustomButton EvilHackerMadmateSetting;
+        public static CustomButton ConjurerAddButton;
+        public static CustomButton ConjurerStartButton;
         public static CustomButton PositionSwapperButton;
         public static CustomButton KunoichiKunaiButton;
         public static CustomButton SecretlyKillerMainButton;
@@ -1671,7 +1675,6 @@ namespace SuperNewRoles.Buttons
                 PositionSwapperButton.buttonText = ModTranslation.GetString("PositionSwapperButtonName");
                 PositionSwapperButton.showButtonText = true;
             };
-
             SecretlyKillerMainButton = new CustomButton(
                 () =>
                 {
@@ -1933,6 +1936,114 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = ModTranslation.GetString("KillName"),
+                showButtonText = true
+            };
+            ConjurerAddButton = new CustomButton(
+                () =>
+                    {
+                        //マーカー設置
+                        var pos1 = PlayerControl.LocalPlayer.transform.position;
+                        var pos2 = PlayerControl.LocalPlayer.transform.position;
+                        var pos3 = PlayerControl.LocalPlayer.transform.position;
+                        byte[] buff = new byte[sizeof(float) * 2];
+                        if (RoleClass.Conjurer.AddedCount == 3)
+                        {
+                            SuperNewRolesPlugin.Logger.LogDebug(pos3);
+                            Buffer.BlockCopy(BitConverter.GetBytes(pos3.x), 0, buff, 0 * sizeof(float), sizeof(float));
+                            Buffer.BlockCopy(BitConverter.GetBytes(pos3.y), 0, buff, 1 * sizeof(float), sizeof(float));
+                        }
+                        if (RoleClass.Conjurer.AddedCount == 1)
+                        {
+                            SuperNewRolesPlugin.Logger.LogDebug(pos2);
+                            Buffer.BlockCopy(BitConverter.GetBytes(pos2.x), 0, buff, 0 * sizeof(float), sizeof(float));
+                            Buffer.BlockCopy(BitConverter.GetBytes(pos2.y), 0, buff, 1 * sizeof(float), sizeof(float));
+                        }
+                        if (RoleClass.Conjurer.AddedCount == 0)
+                        {
+                            SuperNewRolesPlugin.Logger.LogDebug(pos1);
+                            Buffer.BlockCopy(BitConverter.GetBytes(pos1.x), 0, buff, 0 * sizeof(float), sizeof(float));
+                            Buffer.BlockCopy(BitConverter.GetBytes(pos1.y), 0, buff, 1 * sizeof(float), sizeof(float));
+                        }
+                        MessageWriter writer = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.AddMarker, Hazel.SendOption.Reliable);
+                        writer.WriteBytesAndSize(buff);
+                        writer.EndMessage();
+                        RPCProcedure.AddMarker(buff);
+
+
+                        //全ボタンのクールリセット
+                        //Conjurer.AllCoolReset();
+                        SuperNewRolesPlugin.Logger.LogDebug(RoleClass.Conjurer.AddedCount);
+                        if (RoleClass.Conjurer.AddedCount == 2) { pos3 = RoleClass.Conjurer.pos3; RoleClass.Conjurer.AddedCount = 3; }//カウントを進める
+                        else if (RoleClass.Conjurer.AddedCount == 1) { pos2 = RoleClass.Conjurer.pos2; RoleClass.Conjurer.AddedCount = 2; }
+                        else if (RoleClass.Conjurer.AddedCount == 0) { pos1 = RoleClass.Conjurer.pos1; RoleClass.Conjurer.AddedCount = 1; }
+                    },
+                    (bool isAlive, RoleId role) => { return role == RoleId.Conjurer && RoleClass.Conjurer.AddedCount != 3; },
+                    () =>
+                    {
+                        return PlayerControl.LocalPlayer.CanMove;
+                    },
+                    () =>
+                    {
+                        ConjurerAddButton.MaxTimer = RoleClass.Conjurer.CoolTime;
+                        ConjurerAddButton.Timer = RoleClass.Conjurer.CoolTime;
+                    },
+                    RoleClass.Conjurer.GetAddButtonSprite(),
+                    new Vector3(0f, 1f, 0f),
+                    __instance,
+                    __instance.AbilityButton,
+                    KeyCode.F,
+                    49,
+                    () => { return false; }
+                )
+            {
+                buttonText = ModTranslation.GetString("1stAdd"),
+                showButtonText = true
+            };
+
+            ConjurerStartButton = new CustomButton(
+                    () =>
+                    {
+                        var Target = PlayerControlFixedUpdatePatch.SetTarget(onlyCrewmates: true);
+                        var TargetID = Target.PlayerId;
+                        var LocalID = CachedPlayer.LocalPlayer.PlayerId;
+
+                        CustomRPC.RPCProcedure.TraingleKill();
+                        MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.TriangleKill, Hazel.SendOption.Reliable, -1);
+                        killWriter.Write(LocalID);
+                        killWriter.Write(TargetID);
+                        AmongUsClient.Instance.FinishRpcImmediately(killWriter);
+
+                        //発光(色)
+                        if (RoleClass.Conjurer.ScreenFrash)
+                        {
+                            Seer.ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
+                        }
+
+                        RoleClass.Conjurer.AddedCount = 0;
+
+                        //全部Marker消す
+                        Roles.JackInTheBox.clearJackInTheBoxes();
+                    },
+                    (bool isAlive, RoleId role) => { return role == RoleId.Conjurer && RoleClass.Conjurer.AddedCount == 3; },
+                    () =>
+                    {
+                        return PlayerControl.LocalPlayer.CanMove;
+                    },
+                    () =>
+                        {
+                            ConjurerStartButton.MaxTimer = 0f;
+                            ConjurerStartButton.Timer = 0f;
+                        },
+                    RoleClass.Conjurer.GetStartButtonSprite(),
+                    new Vector3(0f, 1f, 0f),
+                    __instance,
+                    __instance.AbilityButton,
+                    KeyCode.F,
+                    49,
+                    () => { return false; }
+                )
+            {
+                buttonText = ModTranslation.GetString("Kill"),
                 showButtonText = true
             };
 

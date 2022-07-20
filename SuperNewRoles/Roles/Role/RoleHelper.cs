@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Hazel;
 using SuperNewRoles.CustomRPC;
@@ -519,6 +519,9 @@ namespace SuperNewRoles
                 case RoleId.HauntedWolf:
                     RoleClass.HauntedWolf.HauntedWolfPlayer.Add(player);
                     break;
+                case RoleId.Conjurer:
+                    RoleClass.Conjurer.ConjurerPlayer.Add(player);
+                    break;
                 case RoleId.PositionSwapper:
                     RoleClass.PositionSwapper.PositionSwapperPlayer.Add(player);
                     break;
@@ -881,6 +884,9 @@ namespace SuperNewRoles
                     break;
                 case RoleId.HauntedWolf:
                     RoleClass.HauntedWolf.HauntedWolfPlayer.RemoveAll(ClearRemove);
+                    break;
+                case CustomRPC.RoleId.Conjurer:
+                    Roles.RoleClass.Conjurer.ConjurerPlayer.RemoveAll(ClearRemove);
                     break;
                 case RoleId.PositionSwapper:
                     RoleClass.PositionSwapper.PositionSwapperPlayer.RemoveAll(ClearRemove);
@@ -1374,6 +1380,7 @@ namespace SuperNewRoles
                 else if (RoleClass.SuicideWisher.SuicideWisherPlayer.IsCheckListPlayerControl(player)) return RoleId.SuicideWisher;
                 else if (RoleClass.Neet.NeetPlayer.IsCheckListPlayerControl(player)) return RoleId.Neet;
                 else if (RoleClass.FastMaker.FastMakerPlayer.IsCheckListPlayerControl(player)) return RoleId.FastMaker;
+                else if (RoleClass.Conjurer.ConjurerPlayer.IsCheckListPlayerControl(player)) return RoleId.Conjurer;
                 else if (RoleClass.ToiletFan.ToiletFanPlayer.IsCheckListPlayerControl(player)) return RoleId.ToiletFan;
                 //ロールチェック
             }

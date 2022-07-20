@@ -1,4 +1,4 @@
-using SuperNewRoles.CustomRPC;
+﻿using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
 {

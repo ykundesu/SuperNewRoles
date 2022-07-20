@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
@@ -851,6 +851,7 @@ namespace SuperNewRoles
                 RoleId.SuicideWisher => CustomOptions.SuicideWisherPlayerCount.GetFloat(),
                 RoleId.Neet => CustomOptions.NeetPlayerCount.GetFloat(),
                 RoleId.ToiletFan => CustomOptions.ToiletFanPlayerCount.GetFloat(),
+                RoleId.Conjurer=> CustomOptions.ConjurerPlayerCount.GetFloat(),
                 //プレイヤーカウント
                 _ => 1,
             };
