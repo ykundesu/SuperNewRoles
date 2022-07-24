@@ -137,6 +137,7 @@ namespace SuperNewRoles.CustomRPC
         Finder,
         Revolutionist,
         Dictator,
+        SidekickFriends,
         //RoleId
     }
 

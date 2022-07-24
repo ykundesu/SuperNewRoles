@@ -4,6 +4,7 @@ using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomRPC;
 using UnityEngine;
+using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles.Roles
 {
@@ -15,10 +16,21 @@ namespace SuperNewRoles.Roles
             HudManagerStartPatch.JackalKillButton.Timer = RoleClass.Jackal.KillCoolDown;
             HudManagerStartPatch.JackalSidekickButton.MaxTimer = RoleClass.Jackal.KillCoolDown;
             HudManagerStartPatch.JackalSidekickButton.Timer = RoleClass.Jackal.KillCoolDown;
+            HudManagerStartPatch.JackalFriendsMakeButton.MaxTimer = RoleClass.Jackal.KillCoolDown;
+            HudManagerStartPatch.JackalFriendsMakeButton.Timer = RoleClass.Jackal.KillCoolDown;
         }
         public static void EndMeeting()
         {
             ResetCoolDown();
+        }
+        public static void CreateFriend()
+        {
+            var target = Jackal.JackalFixedPatch.JackalSetTarget();
+
+            target.RPCSetRoleUnchecked(RoleTypes.Crewmate);//くるぅにして
+            target.SetRoleRPC(RoleId.SidekickFriends);//サイドキックフレンズにする
+            RoleClass.Jackal.IsCreatedFriend = true;//作ったことに
+            SuperNewRolesPlugin.Logger.LogInfo("[CreateFriend_RoleName:" + PlayerControl.LocalPlayer.GetRole() + "]フレンズを作ったよ!");
         }
         public static void SetPlayerOutline(PlayerControl target, Color color)
         {

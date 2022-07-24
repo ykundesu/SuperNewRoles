@@ -164,7 +164,7 @@ namespace SuperNewRoles.EndGame
 
                 foreach (var data in AdditionalTempData.playerRoles)
                 {
-                    Logger.Info(data.PlayerName+":"+winningPlayerData2.PlayerName);
+                    Logger.Info(data.PlayerName + ":" + winningPlayerData2.PlayerName);
                     if (data.PlayerName != winningPlayerData2.PlayerName) continue;
                     poolablePlayer.cosmetics.nameText.text = $"{data.PlayerName}{data.NameSuffix}\n{string.Join("\n", ModHelpers.Cs(data.IntroDate.color, data.IntroDate.Name))}";
                 }
@@ -494,6 +494,7 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.BlackCat.BlackCatPlayer);
             notWinners.AddRange(RoleClass.Neet.NeetPlayer);
             notWinners.AddRange(RoleClass.Revolutionist.RevolutionistPlayer);
+            notWinners.AddRange(RoleClass.Jackal.SidekickFriendsPlayer);
 
             foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
             {
@@ -1123,7 +1124,7 @@ namespace SuperNewRoles.EndGame
                         if (playerInfo.Object.IsAlive())
                         {
                             numTotalAlive++;
-                            if (playerInfo.Object.IsRole(RoleId.Jackal, RoleId.Sidekick, RoleId.TeleportingJackal, RoleId.JackalSeer, RoleId.SidekickSeer))
+                            if (playerInfo.Object.IsRole(RoleId.Jackal, RoleId.Sidekick, RoleId.TeleportingJackal, RoleId.JackalSeer, RoleId.SidekickSeer, RoleId.SidekickFriends))
                             {
                                 numTotalJackalTeam++;
                             }

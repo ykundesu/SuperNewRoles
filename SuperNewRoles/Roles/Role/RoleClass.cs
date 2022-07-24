@@ -332,6 +332,7 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> JackalPlayer;
             public static List<PlayerControl> SidekickPlayer;
             public static List<PlayerControl> FakeSidekickPlayer;
+            public static List<PlayerControl> SidekickFriendsPlayer;
             public static Color32 color = new(0, 255, 255, byte.MaxValue);
             public static float KillCoolDown;
             public static bool IsUseVent;
@@ -350,11 +351,18 @@ namespace SuperNewRoles.Roles
                 buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.JackalSidekickButton.png", 115f);
                 return buttonSprite;
             }
+            public static Sprite GetFriendsMakeButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.JackalMakeFriendsButton.png", 115f);
+                return buttonSprite;
+            }
             public static void ClearAndReload()
             {
                 JackalPlayer = new();
                 SidekickPlayer = new();
                 FakeSidekickPlayer = new();
+                SidekickFriendsPlayer = new();
                 KillCoolDown = CustomOptions.JackalKillCoolDown.GetFloat();
                 IsUseVent = CustomOptions.JackalUseVent.GetBool();
                 IsUseSabo = CustomOptions.JackalUseSabo.GetBool();
@@ -1732,6 +1740,7 @@ namespace SuperNewRoles.Roles
             public static bool IsUseVent;
             public static bool IsUseSabo;
             public static bool IsImpostorLight;
+            public static bool CanCreateFriend;
             public static float CoolTime;
             public static float DurationTime;
             public static DateTime ButtonTimer;
@@ -1749,6 +1758,7 @@ namespace SuperNewRoles.Roles
                 IsUseVent = CustomOptions.TeleportingJackalUseVent.GetBool();
                 IsUseSabo = CustomOptions.TeleportingJackalUseSabo.GetBool();
                 IsImpostorLight = CustomOptions.TeleportingJackalIsImpostorLight.GetBool();
+                CanCreateFriend = CustomOptions.TeleportingJackalCreateFriend.GetBool();
                 CoolTime = CustomOptions.TeleportingJackalCoolTime.GetFloat();
                 DurationTime = CustomOptions.TeleportingJackalDurationTime.GetFloat();
             }
@@ -1875,13 +1885,7 @@ namespace SuperNewRoles.Roles
             public static bool CreateSidekick;
             public static bool NewJackalCreateSidekick;
             public static bool IsCreateSidekick;
-            private static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.JackalSeerSidekickButton.png", 115f);
-                return buttonSprite;
-            }
+            public static bool CanCreateFriend;
             public static void ClearAndReload()
             {
                 JackalSeerPlayer = new();
@@ -1900,6 +1904,7 @@ namespace SuperNewRoles.Roles
                 CreateSidekick = CustomOptions.JackalSeerCreateSidekick.GetBool();
                 IsCreateSidekick = CustomOptions.JackalSeerCreateSidekick.GetBool();
                 NewJackalCreateSidekick = CustomOptions.JackalSeerNewJackalCreateSidekick.GetBool();
+                CanCreateFriend = CustomOptions.JackalSeerCreateFriend.GetBool();
             }
         }
         public static class Assassin

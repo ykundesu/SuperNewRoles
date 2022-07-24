@@ -207,7 +207,8 @@ namespace SuperNewRoles
                 RoleId.TeleportingJackal or
                 RoleId.JackalSeer or
                 RoleId.SidekickSeer or
-                RoleId.MayorFriends;
+                RoleId.MayorFriends or
+                RoleId.SidekickFriends;
         }
         public static bool IsJackalTeamJackal(this PlayerControl player)
         {
@@ -572,6 +573,9 @@ namespace SuperNewRoles
                     break;
                 case RoleId.Dictator:
                     RoleClass.Dictator.DictatorPlayer.Add(player);
+                    break;
+                case RoleId.SidekickFriends:
+                    RoleClass.Jackal.SidekickFriendsPlayer.Add(player);
                     break;
                 //ロールアド
                 default:
@@ -945,6 +949,9 @@ namespace SuperNewRoles
                 case RoleId.Dictator:
                     RoleClass.Dictator.DictatorPlayer.RemoveAll(ClearRemove);
                     break;
+                case RoleId.SidekickFriends:
+                    RoleClass.Jackal.SidekickFriendsPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
@@ -996,9 +1003,10 @@ namespace SuperNewRoles
                 case RoleId.BlackCat:
                 case RoleId.Neet:
                 case RoleId.Revolutionist:
+                case RoleId.SidekickFriends:
                     IsTaskClear = true;
-                    break; 
-                //タスククリアか
+                    break;
+                    //タスククリアか
             }
             if (!IsTaskClear
                 && ((ModeHandler.IsMode(ModeId.SuperHostRoles) &&
@@ -1024,7 +1032,7 @@ namespace SuperNewRoles
                 RoleId.Jester => RoleClass.Jester.IsUseVent,
                 RoleId.MadMate => CachedPlayer.LocalPlayer.Data.Role.Role != RoleTypes.GuardianAngel && RoleClass.MadMate.IsUseVent,
                 RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsUseVent,
-                RoleId.JackalFriends => RoleClass.JackalFriends.IsUseVent,
+                RoleId.JackalFriends or RoleId.SidekickFriends => RoleClass.JackalFriends.IsUseVent,
                 RoleId.Egoist => RoleClass.Egoist.UseVent,
                 RoleId.Technician => IsSabotage(),
                 RoleId.MadMayor => RoleClass.MadMayor.IsUseVent,
@@ -1103,7 +1111,7 @@ namespace SuperNewRoles
                     RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsImpostorLight,
                     RoleId.MadMaker => RoleClass.MadMaker.IsImpostorLight,
                     RoleId.Jackal or RoleId.Sidekick => RoleClass.Jackal.IsImpostorLight,
-                    RoleId.JackalFriends => RoleClass.JackalFriends.IsImpostorLight,
+                    RoleId.JackalFriends or RoleId.SidekickFriends => RoleClass.JackalFriends.IsImpostorLight,
                     RoleId.SeerFriends => RoleClass.SeerFriends.IsImpostorLight,
                     RoleId.JackalSeer or RoleId.SidekickSeer => RoleClass.JackalSeer.IsImpostorLight,
                     RoleId.MadCleaner => RoleClass.MadCleaner.IsImpostorLight,
@@ -1141,7 +1149,7 @@ namespace SuperNewRoles
                 case RoleId.Revolutionist:
                     IsNeutral = true;
                     break;
-            //第三か
+                    //第三か
             }
             return IsNeutral;
         }
@@ -1413,6 +1421,7 @@ namespace SuperNewRoles
                 else if (RoleClass.Finder.FinderPlayer.IsCheckListPlayerControl(player)) return RoleId.Finder;
                 else if (RoleClass.Revolutionist.RevolutionistPlayer.IsCheckListPlayerControl(player)) return RoleId.Revolutionist;
                 else if (RoleClass.Dictator.DictatorPlayer.IsCheckListPlayerControl(player)) return RoleId.Dictator;
+                else if (RoleClass.Jackal.SidekickFriendsPlayer.IsCheckListPlayerControl(player)) return RoleId.SidekickFriends;
                 //ロールチェック
             }
             catch (Exception e)
