@@ -36,6 +36,7 @@ namespace SuperNewRoles.EndGame
         TunaWin,
         NeetWin,
         RevolutionistWin,
+        SuicidalIdeationWin,
         BugEnd
     }
     enum WinCondition
@@ -58,6 +59,7 @@ namespace SuperNewRoles.EndGame
         TunaWin,
         NeetWin,
         RevolutionistWin,
+        SuicidalIdeationWin,
         BugEnd
     }
     [HarmonyPatch(typeof(ShipStatus))]
@@ -246,6 +248,10 @@ namespace SuperNewRoles.EndGame
                     text = "RevolutionistName";
                     RoleColor = RoleClass.Revolutionist.color;
                     break;
+                case WinCondition.SuicidalIdeationWin:
+                    text = RoleClass.SuicidalIdeation.SuicidalIdeationWinText ? "SuicidalIdeationWinText" : "SuicidalIdeationName"; 
+                    RoleColor = RoleClass.SuicidalIdeation.color;
+                    break;
                 default:
                     switch (AdditionalTempData.gameOverReason)
                     {
@@ -339,6 +345,7 @@ namespace SuperNewRoles.EndGame
                     }
                 }
             }
+
             textRenderer.text = haison ? text : string.Format(text + " " + ModTranslation.GetString("WinName"));
             try
             {
@@ -471,6 +478,7 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.Truelover.trueloverPlayer);
             notWinners.AddRange(RoleClass.Egoist.EgoistPlayer);
             notWinners.AddRange(RoleClass.Workperson.WorkpersonPlayer);
+
             notWinners.AddRange(RoleClass.Amnesiac.AmnesiacPlayer);
             notWinners.AddRange(RoleClass.SideKiller.MadKillerPlayer);
             notWinners.AddRange(RoleClass.MadMayor.MadMayorPlayer);
@@ -494,6 +502,7 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.BlackCat.BlackCatPlayer);
             notWinners.AddRange(RoleClass.Neet.NeetPlayer);
             notWinners.AddRange(RoleClass.Revolutionist.RevolutionistPlayer);
+            notWinners.AddRange(RoleClass.SuicidalIdeation.SuicidalIdeationPlayer);
 
             foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
             {
@@ -526,6 +535,7 @@ namespace SuperNewRoles.EndGame
             bool VultureWin = gameOverReason == (GameOverReason)CustomGameOverReason.VultureWin;
             bool NeetWin = gameOverReason == (GameOverReason)CustomGameOverReason.NeetWin;
             bool RevolutionistWin = gameOverReason == (GameOverReason)CustomGameOverReason.RevolutionistWin;
+            bool SuicidalIdeationWin = gameOverReason == (GameOverReason)CustomGameOverReason.SuicidalIdeationWin;
             bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
             if (ModeHandler.IsMode(ModeId.SuperHostRoles) && EndData != null)
             {
@@ -639,6 +649,13 @@ namespace SuperNewRoles.EndGame
                 TempData.winners.Add(wpd);
                 AdditionalTempData.winCondition = WinCondition.RevolutionistWin;
             }
+            else if (SuicidalIdeationWin)
+            {
+                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                WinningPlayerData wpd = new(WinnerPlayer.Data);
+                TempData.winners.Add(wpd);
+                AdditionalTempData.winCondition = WinCondition.SuicidalIdeationWin;
+            }
 
             if (TempData.winners.GetFastEnumerator().ToArray().Any(x => x.IsImpostor))
             {
@@ -730,7 +747,13 @@ namespace SuperNewRoles.EndGame
                     TempData.winners.Add(new WinningPlayerData(p.Data));
                 }
             }
-
+            foreach (PlayerControl p in RoleClass.SuicidalIdeation.SuicidalIdeationPlayer)
+            {
+                if (p.IsAlive())
+                {
+                    TempData.winners.Add(new WinningPlayerData(p.Data));
+                }
+            }
             foreach (PlayerControl player in RoleClass.Opportunist.OpportunistPlayer)
             {
                 if (player.IsAlive())
@@ -938,6 +961,7 @@ namespace SuperNewRoles.EndGame
                 if (CheckAndEndGameForEgoistWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
+                if (CheckAndEndGameForSuicidalIdeationWin(__instance)) return false;
                 if (!PlusModeHandler.IsMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)) return false;
             }
             return false;
@@ -1083,6 +1107,30 @@ namespace SuperNewRoles.EndGame
                             RPCProcedure.ShareWinner(p.PlayerId);
                             __instance.enabled = false;
                             CustomEndGame((GameOverReason)CustomGameOverReason.WorkpersonWin, false);
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+        public static bool CheckAndEndGameForSuicidalIdeationWin(ShipStatus __instance)
+        {
+            foreach (PlayerControl p in RoleClass.SuicidalIdeation.SuicidalIdeationPlayer)
+            {
+                if (!p.Data.Disconnected)
+                {
+                    if (p.IsAlive())
+                    {
+                        var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
+                        if (playerCompleted >= playerTotal)
+                        {
+                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                            Writer.Write(p.PlayerId);
+                            AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                            RPCProcedure.ShareWinner(p.PlayerId);
+                            __instance.enabled = false;
+                            CustomEndGame((GameOverReason)CustomGameOverReason.SuicidalIdeationWin, false);
                             return true;
                         }
                     }
