@@ -57,6 +57,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     CustomOptions.MadMakerOption.GetSelection() != 0 ||
                     CustomOptions.SamuraiOption.GetSelection() != 0 ||
                     CustomOptions.DemonOption.GetSelection() != 0 ||
+                    CustomOptions.ToiletFanOption.GetSelection() != 0||
+                    CustomOptions.AllOpenerOption.GetSelection() != 0||
                     CustomOptions.ToiletFanOption.GetSelection() != 0 ||
                     CustomOptions.NiceButtonerOption.GetSelection() != 0)
                 {
@@ -99,7 +101,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static void SetCustomRoles()
         {
-            /*============インポスターにDesync============*/
+            /*==========インポスターにDesync==========*/
             List<PlayerControl> DesyncImpostors = new();
             DesyncImpostors.AddRange(RoleClass.Jackal.JackalPlayer);
             DesyncImpostors.AddRange(RoleClass.Sheriff.SheriffPlayer);
@@ -107,8 +109,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             DesyncImpostors.AddRange(RoleClass.Truelover.trueloverPlayer);
             DesyncImpostors.AddRange(RoleClass.FalseCharges.FalseChargesPlayer);
             DesyncImpostors.AddRange(RoleClass.MadMaker.MadMakerPlayer);
-            /*============インポスターにDesync============*/
-
+            /*==========インポスターにDesync==========*/
 
             /*============エンジニアに役職設定============*/
             List<PlayerControl> SetRoleEngineers = new();
@@ -123,7 +124,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (RoleClass.Tuna.IsUseVent) SetRoleEngineers.AddRange(RoleClass.Tuna.TunaPlayer);
             SetRoleEngineers.AddRange(RoleClass.Technician.TechnicianPlayer);
             if (RoleClass.BlackCat.IsUseVent) SetRoleEngineers.AddRange(RoleClass.BlackCat.BlackCatPlayer);
-            /*============エンジニアに役職設定============*/
+            /*==========エンジニアに役職設定==========*/
 
 
             /*============シェイプシフターDesync============*/
@@ -131,6 +132,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             DesyncShapeshifters.AddRange(RoleClass.Arsonist.ArsonistPlayer);
             DesyncShapeshifters.AddRange(RoleClass.RemoteSheriff.RemoteSheriffPlayer);
             DesyncShapeshifters.AddRange(RoleClass.ToiletFan.ToiletFanPlayer);
+            DesyncShapeshifters.AddRange(RoleClass.AllOpener.AllOpenerPlayer);
             DesyncShapeshifters.AddRange(RoleClass.NiceButtoner.NiceButtonerPlayer);
             /*============シェイプシフターDesync============*/
 

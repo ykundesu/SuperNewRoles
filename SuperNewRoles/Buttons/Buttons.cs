@@ -65,6 +65,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton SuicideWisherSuicideButton;
         public static CustomButton FastMakerButton;
         public static CustomButton ToiletFanButton;
+        public static CustomButton AllOpenerButton;
         public static CustomButton ButtonerButton;
         public static CustomButton RevolutionistButton;
 
@@ -1969,6 +1970,35 @@ namespace SuperNewRoles.Buttons
                 showButtonText = true
             };
 
+            AllOpenerButton = new CustomButton(
+                () =>
+                {
+                    AllOpener.AllDoorsOpen();
+                    RoleClass.AllOpener.IsOpened = true;
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.AllOpener && !RoleClass.AllOpener.IsOpened; },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    AllOpenerButton.MaxTimer = 0.1f;
+                    AllOpenerButton.Timer = 0.1f;
+                },
+                RoleClass.AllOpener.getButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.Q,
+                8,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.GetString("OpenName"),
+                showButtonText = true
+            };
+
             ButtonerButton = new(
                 () =>
                 {
@@ -1988,10 +2018,6 @@ namespace SuperNewRoles.Buttons
                 {
                     if (PlayerControl.LocalPlayer.IsRole(RoleId.NiceButtoner) && RoleClass.NiceButtoner.SkillCount == 0) return false;
                     if (PlayerControl.LocalPlayer.IsRole(RoleId.EvilButtoner) && RoleClass.EvilButtoner.SkillCount == 0) return false;
-                    return PlayerControl.LocalPlayer.CanMove;
-                },
-                () =>
-                {
                     if (PlayerControl.LocalPlayer.IsRole(RoleId.NiceButtoner) && RoleClass.NiceButtoner.SkillCount == 0) return;
                     if (PlayerControl.LocalPlayer.IsRole(RoleId.EvilButtoner) && RoleClass.EvilButtoner.SkillCount == 0) return;
                     //イビルボタナーなら
@@ -2048,7 +2074,6 @@ namespace SuperNewRoles.Buttons
                 showButtonText = true,
                 color = Color.yellow
             };
-
             SetCustomButtonCooldowns();
         }
     }

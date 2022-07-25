@@ -823,4 +823,8 @@ ToiletCoolDownSetting,Toilet Cool Time,トイレクールタイム
 ToiletName,DoorOpen,ドア開放
 PolusrandomSpawn,RandomSpawn,ランダムスポーン
 NotImpostorExiled,Not taking the Imposter off the road,インポスターを道連れにしない
+AllOpenerName,All Opener,オールオープナー
+AllOpenerTitle1,Open All,全て開けろ
+OpenName,Open,開ける
+AllOpenerDescription,Once.\nIn Skeld And Mila、 repair the sabots.\nOpen all the doors in Polus and Airship.\nSHR can use the ability to shape-shift,一度だけ\nスケルド・ミラではサボを修理し、\nエアーシップ、ポーラスでは扉をすべて開けます\nSHRではシェイプシフトで能力を使用できます
 NeutralSubIntro,Think only of yourself. Use others.,自分の事だけ考えろ。他人の事は利用せよ。

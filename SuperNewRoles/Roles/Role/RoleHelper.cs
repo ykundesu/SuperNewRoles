@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Hazel;
 using SuperNewRoles.CustomRPC;
@@ -558,6 +558,9 @@ namespace SuperNewRoles
                 case RoleId.ToiletFan:
                     RoleClass.ToiletFan.ToiletFanPlayer.Add(player);
                     break;
+                case RoleId.AllOpener:
+                    RoleClass.AllOpener.AllOpenerPlayer.Add(player);
+                    break;
                 case RoleId.EvilButtoner:
                     RoleClass.EvilButtoner.EvilButtonerPlayer.Add(player);
                     break;
@@ -930,6 +933,9 @@ namespace SuperNewRoles
                 case RoleId.ToiletFan:
                     RoleClass.ToiletFan.ToiletFanPlayer.RemoveAll(ClearRemove);
                     break;
+                case RoleId.AllOpener:
+                    RoleClass.AllOpener.AllOpenerPlayer.RemoveAll(ClearRemove);
+                    break;
                 case RoleId.EvilButtoner:
                     RoleClass.EvilButtoner.EvilButtonerPlayer.RemoveAll(ClearRemove);
                     break;
@@ -1002,7 +1008,7 @@ namespace SuperNewRoles
             }
             if (!IsTaskClear
                 && ((ModeHandler.IsMode(ModeId.SuperHostRoles) &&
-                player.IsRole(RoleId.Sheriff, RoleId.RemoteSheriff, RoleId.ToiletFan, RoleId.NiceButtoner))
+                player.IsRole(RoleId.Sheriff, RoleId.RemoteSheriff, RoleId.ToiletFan, RoleId.NiceButtoner, RoleId.AllOpener))
                 || player.IsQuarreled()
                 || (!RoleClass.Lovers.AliveTaskCount && player.IsLovers())
                 || player.IsImpostor()))
@@ -1408,6 +1414,7 @@ namespace SuperNewRoles
                 else if (RoleClass.Neet.NeetPlayer.IsCheckListPlayerControl(player)) return RoleId.Neet;
                 else if (RoleClass.FastMaker.FastMakerPlayer.IsCheckListPlayerControl(player)) return RoleId.FastMaker;
                 else if (RoleClass.ToiletFan.ToiletFanPlayer.IsCheckListPlayerControl(player)) return RoleId.ToiletFan;
+                else if (RoleClass.AllOpener.AllOpenerPlayer.IsCheckListPlayerControl(player)) return RoleId.AllOpener;
                 else if (RoleClass.EvilButtoner.EvilButtonerPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilButtoner;
                 else if (RoleClass.NiceButtoner.NiceButtonerPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceButtoner;
                 else if (RoleClass.Finder.FinderPlayer.IsCheckListPlayerControl(player)) return RoleId.Finder;

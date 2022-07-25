@@ -822,4 +822,8 @@ ToiletCoolDownSetting
 ToiletName
 PolusrandomSpawn
 NotImpostorExiled
+AllOpenerName
+AllOpenerTitle1
+OpenName
+AllOpenerDescription
 NeutralSubIntro

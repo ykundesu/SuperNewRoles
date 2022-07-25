@@ -924,6 +924,7 @@ namespace SuperNewRoles
                 RoleId.SuicideWisher => CustomOptions.SuicideWisherPlayerCount.GetFloat(),
                 RoleId.Neet => CustomOptions.NeetPlayerCount.GetFloat(),
                 RoleId.ToiletFan => CustomOptions.ToiletFanPlayerCount.GetFloat(),
+                RoleId.AllOpener => CustomOptions.AllOpenerPlayerCount.GetFloat(),
                 RoleId.EvilButtoner => CustomOptions.EvilButtonerPlayerCount.GetFloat(),
                 RoleId.NiceButtoner => CustomOptions.NiceButtonerPlayerCount.GetFloat(),
                 RoleId.Finder => CustomOptions.FinderPlayerCount.GetFloat(),

@@ -156,6 +156,10 @@ namespace SuperNewRoles.Patches
                         ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 81);
                         ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 82);
                         return false;
+                    case RoleId.AllOpener:
+                        if (!RoleClass.AllOpener.IsOpened) { AllOpener.AllDoorsOpen(); }//開けてなければ開ける
+                        RoleClass.AllOpener.IsOpened = true;
+                        break;
                     case RoleId.NiceButtoner:
                         if (RoleClass.NiceButtoner.SkillCountSHR.ContainsKey(__instance.PlayerId))
                             RoleClass.NiceButtoner.SkillCountSHR[__instance.PlayerId]--;
@@ -405,8 +409,9 @@ namespace SuperNewRoles.Patches
                     {
                         case RoleId.RemoteSheriff:
                         case RoleId.ToiletFan:
+                        case RoleId.AllOpener:
                         case RoleId.NiceButtoner:
-                            return false;
+                            return false;//キルをガード
                         case RoleId.Egoist:
                             if (!RoleClass.Egoist.UseKill) return false;
                             break;

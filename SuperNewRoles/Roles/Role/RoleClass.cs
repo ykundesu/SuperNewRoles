@@ -154,6 +154,7 @@ namespace SuperNewRoles.Roles
             Neet.ClearAndReload();
             FastMaker.ClearAndReload();
             ToiletFan.ClearAndReload();
+            AllOpener.ClearAndReload();
             EvilButtoner.ClearAndReload();
             NiceButtoner.ClearAndReload();
             Finder.ClearAndReload();
@@ -2437,6 +2438,24 @@ namespace SuperNewRoles.Roles
             {
                 ToiletFanPlayer = new();
                 ToiletCool = CustomOptions.ToiletFanCoolTime.GetFloat();
+            }
+        }
+        public static class AllOpener
+        {
+            public static List<PlayerControl> AllOpenerPlayer;
+            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static bool IsOpened;
+            private static Sprite buttonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.AllOpenerButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                AllOpenerPlayer = new();
+                IsOpened = false;
             }
         }
         public static class EvilButtoner

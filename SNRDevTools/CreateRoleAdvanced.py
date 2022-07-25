@@ -222,7 +222,7 @@ namespace SuperNewRoles.Roles"""+namedata+"""
             //その他Option
             public static void ClearAndReload()
             {
-                ROLENAMEPlayer = new List<PlayerControl>();
+                ROLENAMEPlayer = new();
                 //その他クリｱァ
             }
         }\n        //新ロールクラス""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("COLORS", MainClass.GetRoleColor()))

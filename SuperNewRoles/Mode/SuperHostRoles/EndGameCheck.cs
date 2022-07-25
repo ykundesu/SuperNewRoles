@@ -68,13 +68,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             SetDeadGuardianAngel.AddRange(RoleClass.RemoteSheriff.RemoteSheriffPlayer);
             SetDeadGuardianAngel.AddRange(RoleClass.Arsonist.ArsonistPlayer);
             SetDeadGuardianAngel.AddRange(RoleClass.ToiletFan.ToiletFanPlayer);
+            SetDeadGuardianAngel.AddRange(RoleClass.AllOpener.AllOpenerPlayer);
             SetDeadGuardianAngel.AddRange(RoleClass.NiceButtoner.NiceButtonerPlayer);
             /*============死亡時守護天使============*/
             foreach (PlayerControl p in SetDeadGuardianAngel)
             {
                 p.RpcSetRole(RoleTypes.GuardianAngel);
             }
-
             if (OnGameEndPatch.EndData == null && (reason == GameOverReason.ImpostorByKill || reason == GameOverReason.ImpostorBySabotage || reason == GameOverReason.ImpostorByVote || reason == GameOverReason.ImpostorDisconnect))
             {
                 foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
